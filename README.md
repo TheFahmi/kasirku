@@ -1,58 +1,55 @@
 # KasirKu
 
-Aplikasi Kasir (Point of Sale) modern, cepat, dan 100% offline. Didesain untuk kemudahan penggunaan di perangkat apa pun tanpa perlu terhubung ke internet.
+KasirKu adalah aplikasi Point of Sale (POS) berbasis web yang ringan dan dirancang khusus untuk lingkungan offline. Aplikasi ini berjalan sepenuhnya di sisi klien (browser) tanpa memerlukan server backend, menggunakan LocalStorage untuk persistensi data dan Web Crypto API untuk keamanan cadangan data.
 
-## 🛠️ Tech Stack
-* **Frontend:** Vanilla JavaScript (ES Modules), HTML5, CSS3
-* **Build Tool:** [Vite](https://vitejs.dev/) + `vite-plugin-singlefile`
-* **Storage:** LocalStorage API
-* **Security:** Web Crypto API (AES-GCM untuk enkripsi data)
+## Fitur
 
-## ✨ Fitur Utama
-* **100% Offline:** Berjalan murni di sisi browser (Local Storage).
-* **Single File Build:** Tidak butuh server, cukup buka 1 file HTML dan aplikasi langsung jalan.
-* **Keamanan Data:** Fitur backup dan restore data yang dienkripsi secara aman menggunakan sandi akun (AES-GCM).
-* **Modern Stack:** Dibangun menggunakan Vanilla JavaScript (ES Modules) dan di-bundle menggunakan Vite.
+- **Arsitektur Offline-First**: Seluruh fungsionalitas berjalan secara lokal tanpa memerlukan koneksi internet aktif.
+- **Keamanan Enkripsi**: Fitur ekspor dan impor data diamankan menggunakan algoritma AES-GCM via Web Crypto API.
+- **Single-File Build**: Proses kompilasi menghasilkan satu file HTML mandiri yang sudah memuat seluruh aset (JS & CSS) untuk kemudahan distribusi.
+- **Performa Ringan**: Inti aplikasi dibangun murni dengan Vanilla JavaScript (ES Modules) tanpa memuat framework tambahan.
 
----
+## Tech Stack
 
-## 🚀 Panduan Instalasi & Pengembangan (Development)
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES Modules)
+- **Bundler**: Vite, `vite-plugin-singlefile`
+- **Penyimpanan**: LocalStorage API
+- **Kriptografi**: Web Crypto API (AES-GCM)
 
-Jika Anda ingin mengedit kode atau mengembangkan fitur baru:
+## Prasyarat
 
-1. **Pastikan Anda memiliki Node.js terinstal.**
-2. Clone repository ini:
+- [Node.js](https://nodejs.org/) (disarankan versi 18 ke atas)
+
+## Instalasi & Pengembangan
+
+1. *Clone* repositori ini ke mesin lokal Anda:
    ```bash
    git clone https://github.com/TheFahmi/kasirku.git
    cd kasirku
    ```
-3. Install dependensi (Vite dkk):
+
+2. Lakukan instalasi dependensi:
    ```bash
    npm install
    ```
-4. Jalankan *Development Server*:
+
+3. Jalankan *development server*:
    ```bash
    npm run dev
    ```
-5. Buka browser dan akses alamat yang tertera di terminal (biasanya `http://localhost:5173`). Setiap kali Anda mengedit file di folder `src/`, tampilan di browser akan otomatis diperbarui.
 
----
+## Build & Deployment
 
-## 📦 Panduan Build untuk Produksi (Mode Offline)
+Untuk mengompilasi kode sumber menjadi versi produksi, jalankan perintah berikut:
 
-Karena aplikasi ini dirancang khusus untuk bisa di-klik ganda dan jalan tanpa server (protokol `file://`), Anda harus mem-build aplikasi ini sebelum didistribusikan.
+```bash
+npm run build
+```
 
-1. Jalankan perintah build:
-   ```bash
-   npm run build
-   ```
-2. Vite akan mengkompresi semua JavaScript dan CSS, lalu menyatukannya ke dalam satu file HTML melalui `vite-plugin-singlefile`.
-3. Buka folder **`dist`**.
-4. **Selesai!** Anda hanya butuh file **`dist/index.html`** untuk menjalankan aplikasi. Tinggal klik dua kali file tersebut, dan aplikasi KasirKu siap digunakan sepenuhnya tanpa internet!
+Hasil kompilasi (berupa file HTML tunggal) akan dihasilkan pada direktori `dist/`.
 
----
+### Penggunaan Lokal (Offline)
+Untuk menggunakan aplikasi secara luring, Anda cukup membuka file `dist/index.html` menggunakan peramban web modern. Sistem ini tidak memerlukan *local web server* tambahan.
 
-## Deploy ke Server (Opsional)
-Jika Anda ingin aplikasi ini bisa diakses orang lain secara online:
-* Cukup unggah (upload) file `index.html` yang ada di dalam folder `dist/` ke layanan hosting apa pun (Vercel, Netlify, GitHub Pages, atau folder `public_html` di Shared Hosting).
-* Tidak perlu mengunggah folder `node_modules` atau `src`.
+### Deployment Publik
+Karena keluaran *build* bersifat statis, file `dist/index.html` dapat diunggah secara langsung ke berbagai layanan *static hosting* (seperti GitHub Pages, Vercel, Netlify) atau ditempatkan pada direktori root *web server* tradisional (Nginx, Apache).
