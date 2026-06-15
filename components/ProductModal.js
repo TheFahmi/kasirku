@@ -1,0 +1,68 @@
+'use strict';
+const ProductModal = (() => {
+    let _editVariants = [];
+    function getCategories() { return ['Semua', ...Array.from(new Set(AppState.state.products.map(p => p.category)))]; }
+    function renderVariantRows() {
+        document.getElementById('variantRows').innerHTML = _editVariants.map((v, i) =>
+            `<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">
+                <input class="field__input" style="flex:2" placeholder="Nama varian (mis: L, Pedas)" value="${Format.esc(v.name)}" data-vi="${i}" data-vf="name" />
+                <input class="field__input" style="flex:1" type="number" placeholder="Harga (kosong=default)" value="${v.price ?? ''}" data-vi="${i}" data-vf="price" inputmode="numeric" />
+                <button type="button" style="color:var(--danger);font-size:18px;padding:4px 8px" data-vdel="${i}">✕</button>
+            </div>`
+        ).join('');
+    }
+    function openProductForm(id) {
+        const p = id ? AppState.state.products.find(x => x.id === id) : null;
+        _editVariants = p && p.variants ? p.variants.map(v => ({ ...v })) : [];
+        document.getElementById('productModalTitle').textContent = p ? 'Edit Produk' : 'Tambah Produk';
+        document.getElementById('productId').value = p ? p.id : '';
+        document.getElementById('productName').value = p ? p.name : '';
+        document.getElementById('productPrice').value = p ? p.price : '';
+        document.getElementById('productCategory').value = p ? p.category : '';
+        document.getElementById('productStock').value = p ? p.stock : 0;
+        document.getElementById('productPinned').checked = p ? !!p.pinned : false;
+        document.getElementById('deleteProductBtn').hidden = !p;
+        document.getElementById('categoryOptions').innerHTML = getCategories().filter(c => c !== 'Semua').map(c => `<option value="${Format.esc(c)}">`).join('');
+        renderVariantRows();
+        Modal.openModal('productModal');
+    }
+    return {
+        mount() {
+            Events.on('product:edit', id => openProductForm(id));
+            Events.on('product:add', () => openProductForm());
+            Events.on('products:manage', () => { Events.emit('productsSheet:open'); });
+            document.getElementById('addVariantBtn').addEventListener('click', () => { _editVariants.push({ id: Format.uid(), name: '', price: null }); renderVariantRows(); });
+            document.getElementById('variantRows').addEventListener('input', e => {
+                const el = e.target; const i = parseInt(el.dataset.vi); if (isNaN(i)) return;
+                if (el.dataset.vf === 'name') _editVariants[i].name = el.value;
+                if (el.dataset.vf === 'price') _editVariants[i].price = el.value === '' ? null : el.value;
+            });
+            document.getElementById('variantRows').addEventListener('click', e => {
+                const btn = e.target.closest('[data-vdel]');
+                if (btn) { _editVariants.splice(parseInt(btn.dataset.vdel), 1); renderVariantRows(); }
+            });
+            document.getElementById('productForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const id = document.getElementById('productId').value;
+                const data = {
+                    name: document.getElementById('productName').value.trim(), price: Math.max(0, parseInt(document.getElementById('productPrice').value) || 0),
+                    category: document.getElementById('productCategory').value.trim() || 'Lainnya', stock: Math.max(0, parseInt(document.getElementById('productStock').value) || 0),
+                    pinned: document.getElementById('productPinned').checked,
+                    variants: _editVariants.filter(v => v.name.trim()).map(v => ({ id: v.id || Format.uid(), name: v.name.trim(), price: (v.price !== '' && v.price !== null && v.price !== undefined) ? Math.max(0, parseInt(v.price) || 0) : null }))
+                };
+                if (!data.name) return UX.toast('Nama produk wajib diisi');
+                if (id) { Object.assign(AppState.state.products.find(x => x.id === id), data); UX.toast('Produk diperbarui'); }
+                else { AppState.state.products.push({ id: Format.uid(), ...data }); UX.toast('Produk ditambahkan'); }
+                AppState.persist(); Modal.closeModal('productModal'); Events.emit('products:updated'); Events.emit('productsSheet:refresh');
+            });
+            document.getElementById('deleteProductBtn').addEventListener('click', async () => {
+                const id = document.getElementById('productId').value; if (!id) return;
+                const ok = await ConfirmDialog.show('Hapus produk ini?', 'Hapus'); if (!ok) return;
+                AppState.state.products = AppState.state.products.filter(x => x.id !== id);
+                AppState.state.cart = AppState.state.cart.filter(x => x.id !== id);
+                AppState.persist(); Modal.closeModal('productModal'); Events.emit('products:updated'); Events.emit('productsSheet:refresh'); Events.emit('cart:updated'); UX.toast('Produk dihapus');
+            });
+        }
+    };
+})();
+
