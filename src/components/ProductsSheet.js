@@ -1,7 +1,7 @@
 import { Events } from '../core/events.js';
 import { AppState } from './AppState.js';
 import { esc, formatRupiah } from '../utils/format.js';
-import { swatch, emptyState } from '../utils/swatch.js';
+import { tile, emptyState } from '../utils/swatch.js';
 import { openModal } from '../utils/modal.js';
 import { UX } from '../utils/ux.js';
 
@@ -18,7 +18,7 @@ function render() {
         const hasVar = p.variants && p.variants.length > 0;
         const priceLabel = hasVar ? `dari ${formatRupiah(Math.min(p.price, ...p.variants.map(v => v.price ?? p.price)))}` : formatRupiah(p.price);
         return `<div class="pcard" style="flex-direction:row;align-items:center;padding:12px;cursor:pointer" data-edit="${p.id}">
-                ${swatch(p.name, p.category)}
+                ${tile(p.name, p.category)}
                 <div style="flex:1;margin-left:12px">
                     <div style="font-weight:600;color:var(--text);margin-bottom:4px">${esc(p.name)}</div>
                     <div style="font-size:13px;color:var(--muted)">${esc(p.category)} • Stok: ${p.stock}</div>
