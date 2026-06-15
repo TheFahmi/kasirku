@@ -2,7 +2,13 @@
 
 Aplikasi Kasir (Point of Sale) modern, cepat, dan 100% offline. Didesain untuk kemudahan penggunaan di perangkat apa pun tanpa perlu terhubung ke internet.
 
-## Fitur Utama
+## 🛠️ Tech Stack
+* **Frontend:** Vanilla JavaScript (ES Modules), HTML5, CSS3
+* **Build Tool:** [Vite](https://vitejs.dev/) + `vite-plugin-singlefile`
+* **Storage:** LocalStorage API
+* **Security:** Web Crypto API (AES-GCM untuk enkripsi data)
+
+## ✨ Fitur Utama
 * **100% Offline:** Berjalan murni di sisi browser (Local Storage).
 * **Single File Build:** Tidak butuh server, cukup buka 1 file HTML dan aplikasi langsung jalan.
 * **Keamanan Data:** Fitur backup dan restore data yang dienkripsi secara aman menggunakan sandi akun (AES-GCM).
