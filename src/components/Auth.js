@@ -56,6 +56,11 @@ async function handleSubmit(e) {
 
 function enterApp() {
     document.getElementById('authScreen').hidden = true;
+    const main = document.querySelector('.app-main');
+    const nav = document.querySelector('.nav');
+    if (main) main.hidden = false;
+    if (nav) nav.hidden = false;
+
     const n = (getAccount() || {}).user || 'Kasir';
     const nameEl = document.getElementById('accountName');
     const avatarEl = document.getElementById('accountAvatar');
@@ -67,6 +72,10 @@ function enterApp() {
 function logout() {
     setSession(false); _mode = 'login'; renderMode();
     document.getElementById('authScreen').hidden = false;
+    const main = document.querySelector('.app-main');
+    const nav = document.querySelector('.nav');
+    if (main) main.hidden = true;
+    if (nav) nav.hidden = true;
     Events.emit('auth:exit');
 }
 
@@ -87,8 +96,10 @@ function resetAllData() {
 }
 
 function routeAuth() {
-    if (!getAccount()) { _mode = 'setup'; renderMode(); document.getElementById('authScreen').hidden = false; }
-    else if (!_session) { _mode = 'login'; renderMode(); document.getElementById('authScreen').hidden = false; }
+    const main = document.querySelector('.app-main');
+    const nav = document.querySelector('.nav');
+    if (!getAccount()) { _mode = 'setup'; renderMode(); document.getElementById('authScreen').hidden = false; if (main) main.hidden = true; if (nav) nav.hidden = true; }
+    else if (!_session) { _mode = 'login'; renderMode(); document.getElementById('authScreen').hidden = false; if (main) main.hidden = true; if (nav) nav.hidden = true; }
     else { enterApp(); }
 }
 
