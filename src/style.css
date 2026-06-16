@@ -958,7 +958,12 @@ textarea {
     flex-direction: column;
     max-width: 560px;
     margin: 0 auto;
-    animation: slideUp .24s cubic-bezier(.2, .8, .2, 1)
+    animation: slideUp .24s cubic-bezier(.2, .8, .2, 1);
+    overflow-y: auto;
+}
+
+.sheet__panel > * {
+    flex-shrink: 0;
 }
 
 .sheet--full .sheet__panel {
