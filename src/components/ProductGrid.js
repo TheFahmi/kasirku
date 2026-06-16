@@ -90,6 +90,20 @@ export const ProductGrid = {
         Events.on('products:filter', () => render());
         Events.on('products:updated', () => render());
         Events.on('cart:updated', () => { AppState.state.products.forEach(p => syncCardBadge(p.id)); });
+        Events.on('scanner:read', ({ code }) => {
+            const product = AppState.state.products.find(p => p.sku === code || p.id === code);
+            if (product) {
+                if (product.stock > 0) {
+                    CartSheet.addToCart(product.id);
+                    // UX toast is optionally called in CartSheet, but adding it here gives clear scanner feedback
+                    import('../utils/ux.js').then(m => m.UX.toast(`Scan: ${product.name}`));
+                } else {
+                    import('../utils/ux.js').then(m => m.UX.toast(`Stok habis: ${product.name}`));
+                }
+            } else {
+                import('../utils/ux.js').then(m => m.UX.toast(`Barcode tidak dikenal: ${code}`));
+            }
+        });
     },
     render, syncCardBadge
 };

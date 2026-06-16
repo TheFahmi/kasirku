@@ -1,13 +1,17 @@
 import { Events } from '../core/events.js';
 import { AppState } from './AppState.js';
 import { esc, formatRupiah } from '../utils/format.js';
+import { Printer } from '../utils/printer.js';
 import { openModal, closeModal } from '../utils/modal.js';
+import { UX } from '../utils/ux.js';
 
 let _PaymentModal;
 export function setPaymentModalRef(pm) { _PaymentModal = pm; }
 
 let _Router;
 export function setRouterRef(r) { _Router = r; }
+
+let _currentTxId = null;
 
 function receiptHTML(tx) {
     const ds     = new Date(tx.date).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
@@ -48,10 +52,25 @@ function receiptHTML(tx) {
 export const ReceiptModal = {
     mount() {
         Events.on('receipt:show', tx => {
+            _currentTxId = tx.id;
             document.getElementById('receiptContent').innerHTML = receiptHTML(tx);
             openModal('receiptModal');
         });
         document.getElementById('printReceiptBtn').addEventListener('click', () => window.print());
+        document.getElementById('receiptModal').addEventListener('click', e => {
+            if (e.target.dataset.close) { closeModal('receiptModal'); _currentTxId = null; }
+        });
+        document.getElementById('printBtBtn').addEventListener('click', async () => {
+            if (!_currentTxId) return;
+            const tx = AppState.state.transactions.find(t => t.id === _currentTxId);
+            if (!tx) return;
+            try {
+                await Printer.printReceipt(tx);
+                UX.toast('Berhasil mengirim data ke printer');
+            } catch (e) {
+                UX.toast(e.message);
+            }
+        });
         document.getElementById('newTransactionBtn').addEventListener('click', () => {
             closeModal('receiptModal');
             if (_Router) _Router.switchView('pos');

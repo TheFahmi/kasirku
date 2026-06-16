@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="KasirKu" />
     <meta name="description" content="Aplikasi kasir offline untuk toko Anda" />
+    <link rel="manifest" href="/manifest.json">
     <title>KasirKu — Aplikasi Kasir Offline</title>
     <script type="module" src="/src/main.js"></script>
 </head>
@@ -257,9 +258,26 @@
                 </button>
             </div>
             <div class="setting-group">
+                <button class="setting-item" id="exportCsvBtn">
+                    <span class="setting-item__ico">
+                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+                    </span>
+                    <span class="setting-item__text">Export CSV<small>Unduh daftar produk sebagai CSV</small></span>
+                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+                <button class="setting-item" id="importCsvBtn">
+                    <span class="setting-item__ico">
+                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 12 15 15"/></svg>
+                    </span>
+                    <span class="setting-item__text">Import CSV<small>Impor produk massal dari file CSV</small></span>
+                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                </button>
+            </div>
+            <div class="setting-group">
                 <button class="setting-item setting-item--danger" id="logoutBtn">Keluar</button>
             </div>
-            <input type="file" id="restoreInput" accept="application/json,.json" hidden />
+            <input type="file" id="restoreInput" accept="application/json,.json,.kxb" hidden />
+            <input type="file" id="importCsvInput" accept=".csv" hidden />
             <p style="text-align:center;font-size:11.5px;color:var(--border);margin-top:18px;font-weight:500;letter-spacing:.03em">KasirKu v2.0.0</p>
         </div>
     </div>
@@ -358,10 +376,11 @@
         <div class="modal__scrim" data-close="receiptModal"></div>
         <div class="modal__panel modal__panel--receipt">
             <div class="receipt" id="receiptContent"></div>
-            <div class="receipt-actions">
-                <button class="btn btn--ghost" id="printReceiptBtn">Cetak</button>
-                <button class="btn btn--primary" id="newTransactionBtn">Transaksi Baru</button>
+            <div style="display:flex;gap:10px;margin-top:16px">
+                <button class="btn" style="flex:1" data-close="receiptModal">Tutup</button>
+                <button class="btn btn--primary" style="flex:1" id="printBtBtn">🖨️ Cetak</button>
             </div>
+            <button class="btn btn--block" style="margin-top:10px;background:var(--surface);border:1px solid var(--border)" id="newTransactionBtn">Transaksi Baru</button>
         </div>
     </div>
 
@@ -397,6 +416,7 @@
             <form id="productForm">
                 <input type="hidden" id="productId" />
                 <label class="field"><span class="field__label">Nama produk</span><input type="text" id="productName" class="field__input" /></label>
+                <label class="field"><span class="field__label">SKU / Barcode <small style="font-weight:400;color:var(--muted)">(opsional)</small></span><input type="text" id="productSku" class="field__input" placeholder="Scan barcode disini..." /></label>
                 <label class="field"><span class="field__label">Harga dasar (Rp)</span><input type="number" id="productPrice" class="field__input" min="0" inputmode="numeric" /></label>
                 <label class="field"><span class="field__label">Kategori</span><input type="text" id="productCategory" class="field__input" list="categoryOptions" /><datalist id="categoryOptions"></datalist></label>
                 <label class="field"><span class="field__label">Stok</span><input type="number" id="productStock" class="field__input" min="0" value="0" inputmode="numeric" /></label>

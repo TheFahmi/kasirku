@@ -28,6 +28,7 @@ function openProductForm(id) {
     document.getElementById('productModalTitle').textContent = p ? 'Edit Produk' : 'Tambah Produk';
     document.getElementById('productId').value = p ? p.id : '';
     document.getElementById('productName').value = p ? p.name : '';
+    document.getElementById('productSku').value = p && p.sku ? p.sku : '';
     document.getElementById('productPrice').value = p ? p.price : '';
     document.getElementById('productCategory').value = p ? p.category : '';
     document.getElementById('productStock').value = p ? p.stock : 0;
@@ -57,7 +58,9 @@ export const ProductModal = {
             e.preventDefault();
             const id = document.getElementById('productId').value;
             const data = {
-                name: document.getElementById('productName').value.trim(), price: Math.max(0, parseInt(document.getElementById('productPrice').value) || 0),
+                name: document.getElementById('productName').value.trim(), 
+                sku: document.getElementById('productSku').value.trim(),
+                price: Math.max(0, parseInt(document.getElementById('productPrice').value) || 0),
                 category: document.getElementById('productCategory').value.trim() || 'Lainnya', stock: Math.max(0, parseInt(document.getElementById('productStock').value) || 0),
                 pinned: document.getElementById('productPinned').checked,
                 variants: _editVariants.filter(v => v.name.trim()).map(v => ({ id: v.id || uid(), name: v.name.trim(), price: (v.price !== '' && v.price !== null && v.price !== undefined) ? Math.max(0, parseInt(v.price) || 0) : null }))

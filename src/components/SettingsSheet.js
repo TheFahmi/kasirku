@@ -8,6 +8,7 @@ import { ConfirmDialog } from './ConfirmDialog.js';
 import { Auth } from './Auth.js';
 import { PaymentModal, BUILTIN_METHODS, customMethods } from './PaymentModal.js';
 import { Crypto } from '../core/crypto.js';
+import { CSV } from '../utils/csv.js';
 
 let _PaymentModal = PaymentModal;
 export function setPaymentModalRef(pm) { _PaymentModal = pm; }
@@ -71,5 +72,33 @@ export const SettingsSheet = {
         document.getElementById('backupBtn').addEventListener('click', backupData);
         document.getElementById('restoreBtn').addEventListener('click', () => { document.getElementById('restoreInput').click(); });
         document.getElementById('restoreInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) restoreData(f); e.target.value = ''; });
+        document.getElementById('exportCsvBtn').addEventListener('click', () => { CSV.exportData(AppState.state.products); closeModal('settingsSheet'); });
+        document.getElementById('importCsvBtn').addEventListener('click', () => { document.getElementById('importCsvInput').click(); });
+        document.getElementById('importCsvInput').addEventListener('change', e => { 
+            const f = e.target.files[0]; 
+            if (f) {
+                CSV.importData(f, async (newProducts) => {
+                    const ok = await ConfirmDialog.show(`Impor ${newProducts.length} produk dari CSV?`, 'Impor');
+                    if (!ok) return;
+                    
+                    // Merge logic: update existing if ID matches, else add
+                    for (const p of newProducts) {
+                        if (p.id) {
+                            const existing = AppState.state.products.find(x => x.id === p.id);
+                            if (existing) Object.assign(existing, p);
+                            else AppState.state.products.push(p);
+                        } else {
+                            p.id = uid();
+                            AppState.state.products.push(p);
+                        }
+                    }
+                    AppState.persist();
+                    Events.emit('products:updated');
+                    UX.toast('Produk berhasil diimpor');
+                    closeModal('settingsSheet');
+                }, err => UX.toast(err.message));
+            }
+            e.target.value = '';
+        });
     }
 };

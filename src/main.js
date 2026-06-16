@@ -4,6 +4,7 @@ import { Storage } from './core/storage.js';
 import { Router } from './core/router.js';
 import { Modal } from './utils/modal.js';
 import { UX } from './utils/ux.js';
+import { Scanner } from './utils/scanner.js';
 import { AppState } from './components/AppState.js';
 import { Auth, setAppStateRef } from './components/Auth.js';
 import { Topbar } from './components/Topbar.js';
@@ -40,6 +41,7 @@ function init() {
     Modal.initDataCloseButtons();
     Modal.initSwipeToClose();
     Topbar.initTheme();
+    Scanner.init();
 
     [
         Auth, Topbar, CategoryChips, ProductGrid, CartBar, CartSheet,
@@ -65,10 +67,14 @@ function init() {
         }
     }, 800);
 
-    // Unregister old service worker
+    // Register service worker
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-            regs.forEach(r => r.unregister());
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(reg => {
+                console.log('SW registered: ', reg.scope);
+            }).catch(err => {
+                console.log('SW registration failed: ', err);
+            });
         });
     }
 }
