@@ -1190,7 +1190,11 @@ textarea {
 }
 
 .setting-item__text {
-    flex: 1
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .setting-item__text small {
@@ -1198,7 +1202,10 @@ textarea {
     font-weight: 400;
     color: var(--muted);
     font-size: 12px;
-    margin-top: 1px
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .setting-item__chev {

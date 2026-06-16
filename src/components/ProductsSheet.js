@@ -23,7 +23,7 @@ function render() {
                     <div style="font-weight:600;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</div>
                     <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.category)} • Stok: ${p.stock}</div>
                 </div>
-                <div style="text-align:right">
+                <div style="text-align:right;flex-shrink:0;margin-left:8px">
                     <div style="font-weight:700;color:var(--text)">${priceLabel}</div>
                     ${p.pinned ? `<div style="font-size:12px;color:var(--accent-ink)">📌 Dipin</div>` : ''}
                 </div>
