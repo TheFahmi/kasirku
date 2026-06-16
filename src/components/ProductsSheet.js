@@ -17,14 +17,14 @@ function render() {
     w.innerHTML = list.map(p => {
         const hasVar = p.variants && p.variants.length > 0;
         const priceLabel = hasVar ? `dari ${formatRupiah(Math.min(p.price, ...p.variants.map(v => v.price ?? p.price)))}` : formatRupiah(p.price);
-        return `<div class="pcard" style="display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px;cursor:pointer" data-edit="${p.id}">
+        return `<div class="pcard" style="flex-direction:row;align-items:center;padding:12px;cursor:pointer" data-edit="${p.id}">
                 ${tile(p.name, p.category)}
-                <div style="min-width:0">
+                <div style="flex:1;margin-left:12px;min-width:0">
                     <div style="font-weight:600;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</div>
                     <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.category)} • Stok: ${p.stock}</div>
                 </div>
-                <div style="text-align:right;min-width:0">
-                    <div style="font-weight:700;color:var(--text);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${priceLabel}</div>
+                <div style="text-align:right;flex-shrink:0;margin-left:8px">
+                    <div style="font-weight:700;color:var(--text)">${priceLabel}</div>
                     ${p.pinned ? `<div style="font-size:12px;color:var(--accent-ink)">📌 Dipin</div>` : ''}
                 </div>
             </div>`;
