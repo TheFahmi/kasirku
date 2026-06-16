@@ -507,14 +507,17 @@ h1, h2, h3, h4, h5, h6 {
     left: 8px;
     max-width: 70%;
     font-size: 10.5px;
-    font-weight: 600;
+    font-weight: 700;
     padding: 3px 8px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, .85);
-    color: var(--tile-fg, #555);
+    background: rgba(255, 255, 255, 0.95);
+    color: #1b1b1a;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .pcard__add {
