@@ -21,6 +21,7 @@ import { SettingsSheet, setPaymentModalRef as settingsSetPM } from './components
 import { StoreModal } from './components/StoreModal.js';
 import { PayMethodsModal } from './components/PayMethodsModal.js';
 import { ProductsSheet } from './components/ProductsSheet.js';
+import { StockOpnameSheet } from './components/StockOpnameSheet.js';
 import { HistoryView } from './components/HistoryView.js';
 import { ReportsView } from './components/ReportsView.js';
 
@@ -46,7 +47,7 @@ function init() {
     [
         Auth, Topbar, CategoryChips, ProductGrid, CartBar, CartSheet,
         ConfirmDialog, VariantModal, PaymentModal, ReceiptModal, ProductModal,
-        SettingsSheet, StoreModal, PayMethodsModal, ProductsSheet,
+        SettingsSheet, StoreModal, PayMethodsModal, ProductsSheet, StockOpnameSheet,
         HistoryView, ReportsView, Router
     ].forEach(m => { if (m && m.mount) m.mount(); });
 
