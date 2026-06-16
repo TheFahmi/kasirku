@@ -1,44 +1,48 @@
 /* ===== Tokens ===== */
 :root {
-    --bg: #f5f4f1;
-    --surface: #fff;
-    --surface-2: #fafaf8;
-    --ink: #1b1b1a;
-    --muted: #76746e;
-    --border: #e7e4dd;
-    --accent: #bf4d23;
-    --accent-soft: #f7e9e1;
-    --accent-ink: #9a3d1b;
-    --success: #1f7a4d;
-    --warn: #c98a2b;
-    --danger: #c0392b;
-    --r-md: 12px;
-    --shadow: 0 1px 2px rgba(20,20,20,.04), 0 8px 24px rgba(20,20,20,.05);
-    --topbar-h: 56px;
-    --nav-h: 64px;
-    --cartbar-h: 56px;
-    --topbar-bg: rgba(255,255,255,.9);
-    --cartbar-bg: #1b1b1a;
-    --cartbar-color: #fff;
-    --skeleton-base: #e8e5de;
-    --skeleton-shine: #f5f3ef;
-}
-
-[data-theme="dark"] {
-    --bg: #0f172a;
-    --surface: #1e293b;
-    --surface-2: #334155;
-    --ink: #f8fafc;
-    --muted: #94a3b8;
-    --border: #334155;
-    --accent: #3b82f6;
-    --accent-soft: rgba(59, 130, 246, 0.15);
-    --accent-ink: #60a5fa;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --accent: #6366f1;
+    --accent-soft: #e0e7ff;
+    --accent-ink: #4f46e5;
     --success: #10b981;
     --warn: #f59e0b;
     --danger: #ef4444;
-    --shadow: 0 10px 15px -3px rgba(0,0,0,0.5), 0 4px 6px -4px rgba(0,0,0,0.4);
-    --topbar-bg: rgba(15, 23, 42, 0.85);
+    --r-sm: 8px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 12px 32px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+    --topbar-h: 60px;
+    --nav-h: 70px;
+    --cartbar-h: 64px;
+    --topbar-bg: rgba(255, 255, 255, 0.75);
+    --cartbar-bg: rgba(15, 23, 42, 0.95);
+    --cartbar-color: #f8fafc;
+    --skeleton-base: #f1f5f9;
+    --skeleton-shine: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg: #0b0f19;
+    --surface: #151e2e;
+    --surface-2: #1e293b;
+    --ink: #f8fafc;
+    --muted: #94a3b8;
+    --border: #293548;
+    --accent: #818cf8;
+    --accent-soft: rgba(99, 102, 241, 0.15);
+    --accent-ink: #a5b4fc;
+    --success: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0 16px 40px rgba(99, 102, 241, 0.2), 0 8px 16px rgba(0, 0, 0, 0.5);
+    --topbar-bg: rgba(11, 15, 25, 0.8);
     --cartbar-bg: rgba(30, 41, 59, 0.95);
     --cartbar-color: #f8fafc;
     --skeleton-base: #1e293b;
@@ -83,12 +87,18 @@ textarea {
     color: var(--ink)
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Outfit", "Inter", sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+}
+
 .ico {
     width: 22px;
     height: 22px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.7;
+    stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round
 }
@@ -417,21 +427,23 @@ textarea {
 
 .chip {
     flex: 0 0 auto;
-    padding: 7px 14px;
+    padding: 8px 16px;
     border-radius: 999px;
     background: var(--surface);
     border: 1px solid var(--border);
-    font-size: 13.5px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--muted);
-    white-space: nowrap;
-    transition: .15s
+    transition: all .2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .chip--active {
-    background: var(--ink);
-    color: var(--bg);
-    border-color: var(--ink)
+    background: linear-gradient(135deg, var(--accent), var(--accent-ink));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px var(--accent-soft);
+    transform: translateY(-1px);
 }
 
 /* ===== Product card ===== */
@@ -445,23 +457,25 @@ textarea {
 .pcard {
     position: relative;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    border: 1px solid transparent;
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow);
     overflow: hidden;
     text-align: left;
     display: flex;
     flex-direction: column;
-    transition: transform .08s, border-color .15s, box-shadow .15s
+    transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .2s ease, border-color .2s ease;
 }
 
 .pcard:active {
-    transform: scale(.98)
+    transform: scale(.95);
 }
 
 @media(hover:hover) {
     .pcard:hover {
-        border-color: #d8d4cc;
-        box-shadow: var(--shadow)
+        border-color: var(--accent-soft);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-4px);
     }
 }
 
@@ -474,6 +488,17 @@ textarea {
     font-size: 26px;
     background: var(--tile-bg, #eee);
     color: var(--tile-fg, #555)
+}
+
+.pcard__tile {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: grid;
+    place-items: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .pcard__cat {
@@ -582,21 +607,22 @@ textarea {
 }
 
 .pcard__body {
-    padding: 9px 11px 11px;
+    padding: 12px 14px 14px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     flex: 1
 }
 
 .pcard__name {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
-    line-height: 1.3;
+    line-height: 1.35;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    color: var(--ink);
     min-height: 35px
 }
 
@@ -610,7 +636,8 @@ textarea {
 
 .pcard__price {
     font-weight: 700;
-    font-size: 14.5px
+    font-size: 15px;
+    color: var(--accent-ink);
 }
 
 .pcard__stock {

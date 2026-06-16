@@ -1,12 +1,12 @@
 import { esc, initials } from './format.js';
 
 const SWATCHES = [
-    ['#eef2fb', '#33509e'],
-    ['#edf5ef', '#2f6f4f'],
-    ['#f8ece4', '#b1502a'],
-    ['#f3eff9', '#6a4bab'],
-    ['#fbf3e3', '#996a17'],
-    ['#f8eef0', '#a83a59'],
+    ['linear-gradient(135deg, #6366f1, #a855f7)', '#ffffff'], // Indigo to Purple
+    ['linear-gradient(135deg, #10b981, #059669)', '#ffffff'], // Emerald
+    ['linear-gradient(135deg, #f59e0b, #ea580c)', '#ffffff'], // Amber to Orange
+    ['linear-gradient(135deg, #ec4899, #e11d48)', '#ffffff'], // Pink to Rose
+    ['linear-gradient(135deg, #3b82f6, #2dd4bf)', '#ffffff'], // Blue to Teal
+    ['linear-gradient(135deg, #8b5cf6, #d946ef)', '#ffffff'], // Violet to Fuchsia
 ];
 
 export const swatch = category => {
