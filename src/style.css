@@ -437,7 +437,7 @@ textarea {
 /* ===== Product card ===== */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 12px;
     padding-bottom: calc(var(--cartbar-h) + 100px)
 }
@@ -1342,7 +1342,7 @@ textarea {
 
 .quickcash {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     gap: 8px;
     margin-bottom: 14px
 }
@@ -1364,7 +1364,7 @@ textarea {
 
 .paymethods {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     gap: 8px;
     margin-bottom: 14px
 }
@@ -1617,7 +1617,7 @@ textarea {
 /* ===== Reports ===== */
 .stat-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 12px;
     margin-bottom: 8px
 }
@@ -1770,19 +1770,9 @@ textarea {
 }
 
 @media(min-width:520px) {
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr)
-    }
 }
 
 @media(min-width:768px) {
-    .product-grid {
-        grid-template-columns: repeat(4, 1fr)
-    }
-
-    .stat-grid {
-        grid-template-columns: repeat(4, 1fr)
-    }
 }
 
 @media print {

@@ -19,9 +19,9 @@ function render() {
         const priceLabel = hasVar ? `dari ${formatRupiah(Math.min(p.price, ...p.variants.map(v => v.price ?? p.price)))}` : formatRupiah(p.price);
         return `<div class="pcard" style="flex-direction:row;align-items:center;padding:12px;cursor:pointer" data-edit="${p.id}">
                 ${tile(p.name, p.category)}
-                <div style="flex:1;margin-left:12px">
-                    <div style="font-weight:600;color:var(--text);margin-bottom:4px">${esc(p.name)}</div>
-                    <div style="font-size:13px;color:var(--muted)">${esc(p.category)} • Stok: ${p.stock}</div>
+                <div style="flex:1;margin-left:12px;min-width:0">
+                    <div style="font-weight:600;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</div>
+                    <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.category)} • Stok: ${p.stock}</div>
                 </div>
                 <div style="text-align:right">
                     <div style="font-weight:700;color:var(--text)">${priceLabel}</div>
