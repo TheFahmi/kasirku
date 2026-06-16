@@ -1568,6 +1568,10 @@ textarea {
     padding-bottom: calc(var(--cartbar-h) + 100px)
 }
 
+.list > * {
+    flex-shrink: 0;
+}
+
 .row {
     display: flex;
     align-items: center;
