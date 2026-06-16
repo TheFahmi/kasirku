@@ -56,7 +56,6 @@ export const ReceiptModal = {
             document.getElementById('receiptContent').innerHTML = receiptHTML(tx);
             openModal('receiptModal');
         });
-        document.getElementById('printReceiptBtn').addEventListener('click', () => window.print());
         document.getElementById('receiptModal').addEventListener('click', e => {
             if (e.target.dataset.close) { closeModal('receiptModal'); _currentTxId = null; }
         });
