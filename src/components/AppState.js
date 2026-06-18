@@ -14,11 +14,22 @@ const SEED_PRODUCTS = [
     { name: 'Sabun Mandi Cair 450ml', price: 18000, category: 'Kebutuhan Harian', stock: 25 },
     { name: 'Pasta Gigi 190g', price: 12500, category: 'Kebutuhan Harian', stock: 30 },
     // --- Laundry / Jasa ---
-    { name: 'Cuci Setrika Reguler (Per Kg)', price: 7000, category: 'Laundry Kiloan', stock: 999 },
-    { name: 'Cuci Kering Kilat (Per Kg)', price: 10000, category: 'Laundry Kiloan', stock: 999 },
-    { name: 'Setrika Saja (Per Kg)', price: 5000, category: 'Laundry Kiloan', stock: 999 },
-    { name: 'Cuci Karpet Tebal (Per M2)', price: 15000, category: 'Laundry Satuan', stock: 999 },
-    { name: 'Cuci Bedcover (Besar)', price: 25000, category: 'Laundry Satuan', stock: 999 },
+    { 
+        name: 'Paket Cuci Kiloan', price: 7000, category: 'Laundry Kiloan', stock: 999,
+        variants: [
+            { id: uid(), name: 'Reguler (3 Hari)', price: 7000 },
+            { id: uid(), name: 'Kilat (1 Hari)', price: 10000 },
+            { id: uid(), name: 'Express (6 Jam)', price: 15000 },
+            { id: uid(), name: 'Setrika Saja', price: 5000 }
+        ]
+    },
+    { 
+        name: 'Cuci Karpet / Selimut', price: 25000, category: 'Laundry Satuan', stock: 999,
+        variants: [
+            { id: uid(), name: 'Reguler (3 Hari)', price: 25000 },
+            { id: uid(), name: 'Express (1 Hari)', price: 35000 }
+        ]
+    },
 ];
 
 export const freshSeed = () => SEED_PRODUCTS.map(p => ({ id: uid(), ...p }));
