@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { Customer } from './entities/customer.entity';
 import { Product } from './entities/product.entity';
 import { Transaction } from './entities/transaction.entity';
 import { Order } from './entities/order.entity';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ProductsModule } from './products/products.module';
+import { CustomersModule } from './customers/customers.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -17,9 +21,12 @@ import { AppService } from './app.service';
       password: 'password123',
       database: 'kasirku',
       entities: [Customer, Product, Transaction, Order],
-      synchronize: true, // Auto-create tables (Dev only)
+      synchronize: true, // Auto create schemas
     }),
-    TypeOrmModule.forFeature([Customer, Product, Transaction, Order]),
+    ProductsModule,
+    CustomersModule,
+    TransactionsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,143 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  stock: number;
+  variants?: { id: string; name: string; price: number }[];
+}
+
+export interface CartItem extends Product {
+  cartKey: string;
+  qty: number;
+}
+
+interface PosState {
+  bizMode: 'retail' | 'fb' | 'service';
+  products: Product[];
+  cart: CartItem[];
+  customers: any[];
+  transactions: any[];
+  discount: { type: 'Rp' | '%'; value: number };
+  
+  setBizMode: (mode: 'retail' | 'fb' | 'service') => void;
+  setProducts: (products: Product[]) => void;
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (cartKey: string) => void;
+  updateCartQty: (cartKey: string, qty: number) => void;
+  clearCart: () => void;
+  setDiscount: (type: 'Rp' | '%', value: number) => void;
+  
+  cartSubtotal: () => number;
+  cartTotal: () => number;
+
+  fetchProducts: () => Promise<void>;
+  fetchCustomers: () => Promise<void>;
+  fetchTransactions: () => Promise<void>;
+  submitOrder: (paymentMethod: string, amountPaid: number) => Promise<boolean>;
+}
+
+export const usePosStore = create<PosState>()(
+  persist(
+    (set, get) => ({
+      bizMode: 'retail',
+      products: [],
+      cart: [],
+      customers: [],
+      transactions: [],
+      discount: { type: 'Rp', value: 0 },
+
+      fetchProducts: async () => {
+        try {
+          const res = await fetch('http://localhost:3005/products');
+          if (res.ok) set({ products: await res.json() });
+        } catch (e) {
+          console.error('Failed to fetch products', e);
+        }
+      },
+      
+      fetchCustomers: async () => {
+        try {
+          const res = await fetch('http://localhost:3005/customers');
+          if (res.ok) set({ customers: await res.json() });
+        } catch (e) {
+          console.error('Failed to fetch customers', e);
+        }
+      },
+      
+      fetchTransactions: async () => {
+        try {
+          const res = await fetch('http://localhost:3005/transactions');
+          if (res.ok) set({ transactions: await res.json() });
+        } catch (e) {
+          console.error('Failed to fetch transactions', e);
+        }
+      },
+
+      submitOrder: async (paymentMethod, amountPaid) => {
+        try {
+          const state = get();
+          if (state.cart.length === 0) return false;
+
+          const total = state.cartTotal();
+          const tx = {
+            id: `TX-${Date.now()}`,
+            items: state.cart,
+            total,
+            paymentMethod,
+            amountPaid,
+            change: amountPaid - total,
+            createdAt: new Date().toISOString()
+          };
+
+          const res = await fetch('http://localhost:3005/transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tx)
+          });
+
+          if (res.ok) {
+            state.clearCart();
+            return true;
+          }
+          return false;
+        } catch (e) {
+          console.error('Failed to submit order', e);
+          return false;
+        }
+      },
+
+      setBizMode: (mode) => set({ bizMode: mode }),
+      setProducts: (products) => set({ products }),
+      addToCart: (item) => set((state) => {
+        const existing = state.cart.find(i => i.cartKey === item.cartKey);
+        if (existing) {
+          return { cart: state.cart.map(i => i.cartKey === item.cartKey ? { ...i, qty: i.qty + item.qty } : i) };
+        }
+        return { cart: [...state.cart, item] };
+      }),
+      removeFromCart: (cartKey) => set((state) => ({ cart: state.cart.filter(i => i.cartKey !== cartKey) })),
+      updateCartQty: (cartKey, qty) => set((state) => ({
+        cart: state.cart.map(i => i.cartKey === cartKey ? { ...i, qty } : i)
+      })),
+      clearCart: () => set({ cart: [] }),
+      setDiscount: (type, value) => set({ discount: { type, value } }),
+
+      cartSubtotal: () => {
+        return get().cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      },
+      cartTotal: () => {
+        const sub = get().cartSubtotal();
+        const d = get().discount;
+        let dist = 0;
+        if (d.type === 'Rp') dist = d.value;
+        else if (d.type === '%') dist = sub * (d.value / 100);
+        return Math.max(0, sub - dist);
+      }
+    }),
+    { name: 'kasirku-pos-store' }
+  )
+);

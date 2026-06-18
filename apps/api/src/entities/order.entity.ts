@@ -5,6 +5,8 @@ export enum OrderStatus {
   PENDING = 'pending',
   PICKUP = 'pickup',
   WASHING = 'washing',
+  COOKING = 'cooking',
+  READY = 'ready',
   DONE = 'done',
   DELIVERED = 'delivered',
 }
@@ -25,6 +27,9 @@ export class Order {
 
   @Column({ nullable: true })
   notes: string;
+
+  @Column({ nullable: true })
+  tableNumber: string;
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: 'customerId' })
