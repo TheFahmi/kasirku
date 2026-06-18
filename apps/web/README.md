@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KasirKu Web (Next.js Frontend)
 
-## Getting Started
+Ini adalah antarmuka *Frontend* utama untuk ekosistem KasirKu. Aplikasi ini mengelola seluruh pengalaman interaksi pengguna dari hulu ke hilir—dari Point of Sale (POS) bagi staf kasir, hingga Portal Publik dan QR Menu untuk pelanggan.
 
-First, run the development server:
+Aplikasi ini menggunakan fitur paling mutakhir dari **Next.js 14 (App Router)** dan *Styling* dengan **Tailwind CSS**.
+
+## ✨ Modul Tersedia
+
+- **POS Dashboard (`/pos`)**: Antarmuka kasir super cepat yang di-*porting* langsung dari vanilla JS POS lama Anda. Sudah menggunakan **Zustand** untuk manajemen keranjang belanja yang instan dan handal.
+- **Portal Pelanggan (`/`)**: Layanan pengecekan kuota laundry, tagihan (piutang), dan form interaktif untuk pemesanan *Pickup* cucian.
+- **Laundry Dashboard (`/laundry/dashboard`)**: Ruang pribadi pelanggan untuk melihat status cucian dan sisa kuota kiloan secara *real-time*.
+- **QR Menu Resto (`/menu/[tableId]`)**: Antarmuka *mobile-first* bergaya elegan bagi pelanggan resto untuk memesan dari meja masing-masing.
+- **Kitchen Dashboard / KDS (`/kitchen`)**: Layar sentuh *Kanban Board* mode gelap khusus untuk koki di dapur guna menerima pesanan dan menandai "Selesai".
+- **Layar Antrean Publik (`/queue`)**: Layar pemonitor status pesanan interaktif (split-screen) untuk dipasang di ruang tunggu pelanggan F&B.
+
+## 🚀 Memulai (Development)
+
+Pastikan *Backend API* (NestJS) sudah menyala di `http://localhost:3005` sebelum menjalankan frontend ini agar data bisa ditarik secara optimal.
+
+Buka terminal di direktori `apps/web` dan jalankan:
 
 ```bash
+# Instalasi dependensi
+npm install
+
+# Jalankan server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplikasi web akan tersedia di [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack & Konvensi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **React Framework**: Next.js 14+ (App Router `src/app`)
+- **UI/UX**: Desain Glassmorphism (Vibrant Accent, Semi-Transparent Surface) diimplementasikan dengan Tailwind CSS (`src/app/pos.css` & Global CSS).
+- **State Management**: Zustand (`src/store/usePosStore.ts`) untuk performa maksimal pengganti *AppState.js* lawas.
+- **Integrasi Backend**: Native API `fetch()` disinkronisasikan di dalam layer *Zustand* agar reaktif terhadap pembaruan UI.
 
-## Learn More
+## 📦 Build untuk Production
 
-To learn more about Next.js, take a look at the following resources:
+Untuk men- *deploy* proyek ke Vercel atau environment produksi lainnya:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Dibangun khusus untuk memenuhi skenario bisnis Enterprise KasirKu Monorepo.*
