@@ -14,7 +14,13 @@ const BUILTIN_METHODS = [
     { id: 'pending', label: 'Belum Lunas (Bayar Nanti)', type: 'debt', builtin: true },
 ];
 let customMethods = Storage.load(Storage.KEY.methods, []);
-const getPayMethods = () => [...BUILTIN_METHODS, ...customMethods];
+const getPayMethods = () => {
+    let list = [...BUILTIN_METHODS, ...customMethods];
+    if (AppState.state.bizMode === 'service') {
+        list.push({ id: 'quota', label: 'Potong Saldo Kuota', type: 'quota', builtin: true });
+    }
+    return list;
+};
 const getPayLabel   = id => (getPayMethods().find(x => x.id === id) || {}).label || (id || 'Tunai');
 const getPayType    = id => (getPayMethods().find(x => x.id === id) || {}).type  || 'noncash';
 
@@ -23,6 +29,7 @@ function methodIcon(m) {
     if (m.id === 'qris')  return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M21 21v-3"/></svg>`;
     if (m.id === 'debit') return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`;
     if (m.id === 'debt')  return `<svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>`;
+    if (m.id === 'quota') return `<svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2" fill="none"/></svg>`;
     if (m.type === 'cash') return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>`;
     return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`;
 }
@@ -109,13 +116,22 @@ function showOrderConfirm() {
         return UX.toast('Pilih pelanggan untuk opsi Kasbon');
     }
     
+    if (_payMethod === 'quota') {
+        if (!customerId) return UX.toast('Pilih pelanggan untuk potong kuota');
+        const c = AppState.state.customers.find(x => x.id === customerId);
+        const totalQty = AppState.state.cart.reduce((s, i) => s + i.qty, 0);
+        if (!c || (c.quota || 0) < totalQty) {
+            return UX.toast(`Sisa Kuota: ${c ? (c.quota || 0) : 0} Kg. Tidak cukup untuk pesanan ini (${totalQty} Kg).`);
+        }
+    }
+    
     if (isCash) {
         const cash = parseFloat(document.getElementById('cashInput').value) || 0;
         if (cash < total) return UX.toast('Uang tidak cukup');
     }
     const rows = AppState.state.cart.map(i =>
         `<div class="ritem"><div class="ritem__name">${esc(i.name)}</div>
-         <div class="ritem__qty">${i.qty} × ${formatRupiah(i.price)}</div>
+         <div class="ritem__qty">${i.qty} x ${formatRupiah(i.price)}</div>
          <div class="ritem__sub">${formatRupiah(i.price * i.qty)}</div></div>`
     ).join('');
     const cash = parseFloat(document.getElementById('cashInput').value) || 0;
@@ -140,6 +156,8 @@ function completeTx() {
         change = cash - total;
     } else if (_payMethod === 'debt' || _payMethod === 'pending') {
         cash = 0; change = 0;
+    } else if (_payMethod === 'quota') {
+        cash = total; change = 0;
     } else {
         cash = total; change = 0;
     }
@@ -179,8 +197,19 @@ function completeTx() {
         const p = AppState.state.products.find(x => x.id === i.id);
         if (p) p.stock = Math.max(0, p.stock - i.qty);
     });
+    
+    if (_payMethod === 'quota' && customerId) {
+        const c = AppState.state.customers.find(x => x.id === customerId);
+        const totalQty = AppState.state.cart.reduce((s, i) => s + i.qty, 0);
+        if (c) {
+            c.quota = Math.max(0, (c.quota || 0) - totalQty);
+            // Limit to 2 decimal places to avoid floating point issues
+            c.quota = Math.round(c.quota * 100) / 100;
+        }
+        Events.emit('customers:updated');
+    }
 
-    // Add to Queue if not Retail
+    // Add to Queue if not Retaill
     if (AppState.state.bizMode !== 'retail') {
         AppState.state.orders.push({
             id: tx.id,

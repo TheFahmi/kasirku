@@ -33,6 +33,10 @@ function render() {
                     <div style="font-size:11px;color:var(--danger);font-weight:800;letter-spacing:1px;text-transform:uppercase">Belum Lunas</div>
                     <div style="font-size:15px;font-weight:800;color:var(--ink)">${formatRupiah(debtTotal)}</div>
                 </div>` : ''}
+                ${(AppState.state.bizMode === 'service' && c.quota > 0) ? `<div style="text-align:right;margin-left:auto">
+                    <div style="font-size:11px;color:var(--primary);font-weight:800;letter-spacing:1px;text-transform:uppercase">Sisa Kuota</div>
+                    <div style="font-size:15px;font-weight:800;color:var(--ink)">${c.quota} Kg</div>
+                </div>` : ''}
             </div>`;
         }).join('');
     }
@@ -50,6 +54,11 @@ function openCustomerModal(id) {
     document.getElementById('customerId').value = c ? c.id : '';
     document.getElementById('customerName').value = c ? c.name : '';
     document.getElementById('customerPhone').value = c ? c.phone : '';
+    
+    const quotaField = document.getElementById('customerQuotaField');
+    if (quotaField) quotaField.style.display = AppState.state.bizMode === 'service' ? 'flex' : 'none';
+    document.getElementById('customerQuota').value = c && c.quota ? c.quota : '';
+
     document.getElementById('deleteCustomerBtn').hidden = !c;
     openModal('customerModal');
 }
@@ -65,20 +74,25 @@ export const CustomersView = {
             const id = document.getElementById('customerId').value;
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
+            const quotaStr = document.getElementById('customerQuota').value;
+            const quota = quotaStr ? parseFloat(quotaStr) : 0;
             if (!name) return;
             
             if (id) {
                 const c = AppState.state.customers.find(x => x.id === id);
-                if (c) { c.name = name; c.phone = phone; }
-                UX.toast('Pelanggan diperbarui');
+                if (c) {
+                    c.name = name;
+                    c.phone = phone;
+                    c.quota = quota;
+                }
             } else {
-                AppState.state.customers.push({ id: uid(), name, phone, createdAt: Date.now() });
-                UX.toast('Pelanggan ditambahkan');
+                AppState.state.customers.push({ id: uid(), name, phone, quota, createdAt: Date.now() });
             }
             AppState.persist();
+            Events.emit('customers:updated');
             closeModal('customerModal');
             render();
-            // Juga perlu re-render payment modal dropdown kalau terbuka, tapi biarkan saja karna re-mount saat open
+            UX.toast('Pelanggan disimpan');
         });
         
         document.getElementById('deleteCustomerBtn').addEventListener('click', () => {
