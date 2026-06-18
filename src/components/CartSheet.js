@@ -81,6 +81,9 @@ function render() {
 
 export const CartSheet = {
     mount() {
+        document.getElementById('discountInput').value = AppState.state.discount.value || 0;
+        document.getElementById('discountType').value  = AppState.state.discount.type || 'Rp';
+        
         Events.on('cart:open', () => {
             render();
             Modal.openModal('cartSheet');
