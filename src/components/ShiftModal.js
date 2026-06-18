@@ -3,6 +3,7 @@ import { AppState } from './AppState.js';
 import { formatRupiah, uid } from '../utils/format.js';
 import { openModal, closeModal } from '../utils/modal.js';
 import { UX } from '../utils/ux.js';
+import { Router } from '../core/router.js';
 
 function render() {
     const active = AppState.getActiveShift();
@@ -62,6 +63,7 @@ export const ShiftModal = {
         });
         
         Events.on('shift:updated', checkShiftReminder);
+        Events.on('view:change', checkShiftReminder);
         setInterval(checkShiftReminder, 60000); // Check every minute
         checkShiftReminder(); // Initial check
         
@@ -114,6 +116,11 @@ export const ShiftModal = {
 export function checkShiftReminder() {
     const blocker = document.getElementById('shiftBlocker');
     if (!blocker) return;
+    
+    if (Router.getCurrentView() !== 'pos') {
+        blocker.hidden = true;
+        return;
+    }
     
     const active = AppState.getActiveShift();
     
