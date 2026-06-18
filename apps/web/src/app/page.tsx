@@ -142,6 +142,59 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Pricing Section */}
+        <section id="pricing" className="py-24">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Mulai Tanpa Risiko</h2>
+              <p className="text-white/60">Pilih paket yang sesuai dengan skala bisnis Anda.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              
+              {/* Free Plan */}
+              <div className="bg-white/5 border border-white/10 p-8 rounded-3xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-400 to-gray-600"></div>
+                <h3 className="text-2xl font-bold mb-2">Basic</h3>
+                <div className="flex items-baseline mb-6">
+                  <span className="text-4xl font-extrabold">Gratis</span>
+                  <span className="text-white/50 ml-2">selamanya</span>
+                </div>
+                <p className="text-white/60 mb-8">Sempurna untuk UMKM yang baru mulai go-digital.</p>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> 1 Cabang (Free Unlimited)</li>
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Transaksi Tanpa Batas</li>
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Fitur Kasir (POS) Standar</li>
+                </ul>
+                <Link href="/pos" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 text-center rounded-xl font-semibold transition-colors">
+                  Coba Gratis Sekarang
+                </Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="bg-accent/10 border border-accent/30 p-8 rounded-3xl relative overflow-hidden transform md:-translate-y-4 shadow-2xl shadow-accent/20">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent to-purple-500"></div>
+                <div className="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Paling Laris</div>
+                <h3 className="text-2xl font-bold mb-2">Pro Omni</h3>
+                <div className="flex items-baseline mb-6">
+                  <span className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">Rp 99.000</span>
+                  <span className="text-white/50 ml-2">/bulan/cabang</span>
+                </div>
+                <p className="text-white/60 mb-8">Sistem lengkap ala restoran raksasa untuk UMKM.</p>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Semua Fitur Basic</li>
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> QR Menu Interaktif (Self-Order)</li>
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Kitchen Display System (KDS)</li>
+                  <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Layar Antrean Pelanggan</li>
+                </ul>
+                <Link href="/pos" className="block w-full py-3 px-4 bg-accent hover:bg-blue-600 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-accent/30">
+                  Mulai Paket Pro
+                </Link>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="border-t border-white/10 py-12 text-center text-white/40">
           <p>&copy; {new Date().getFullYear()} KasirKu Omni. All rights reserved.</p>
