@@ -1193,6 +1193,15 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--surface)
 }
 
+.setting-header {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 8px 0 6px 12px;
+}
+
 .setting-item {
     display: flex;
     align-items: center;
