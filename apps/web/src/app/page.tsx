@@ -20,8 +20,8 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           </div>
           <div className="flex space-x-4">
-            <Link href="/pos" className="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95">
-              Login Kasir
+            <Link href="/register" className="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95">
+              Buka Toko Gratis
             </Link>
           </div>
         </div>
@@ -45,8 +45,8 @@ export default function LandingPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
-            <Link href="/pos" className="w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
-              Coba Kasir Sekarang
+            <Link href="/register" className="w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
+              Coba Gratis Sekarang
             </Link>
             <a href="#features" className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white font-semibold rounded-full border border-white/10 hover:bg-white/10 transition-all">
               Pelajari Fitur
@@ -161,7 +161,7 @@ export default function LandingPage() {
                   <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Transaksi Tanpa Batas</li>
                   <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Fitur Kasir (POS) Standar</li>
                 </ul>
-                <Link href="/pos" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 text-center rounded-xl font-semibold transition-colors">
+                <Link href="/register" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 text-center rounded-xl font-semibold transition-colors">
                   Coba Gratis Sekarang
                 </Link>
               </div>
@@ -182,8 +182,8 @@ export default function LandingPage() {
                   <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Kitchen Display System (KDS)</li>
                   <li className="flex items-center text-white/80"><svg className="w-5 h-5 text-accent mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> Layar Antrean Pelanggan</li>
                 </ul>
-                <Link href="/pos" className="block w-full py-3 px-4 bg-accent hover:bg-blue-600 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-accent/30">
-                  Mulai Paket Pro
+                <Link href="/register" className="block w-full py-3 px-4 bg-accent hover:bg-blue-600 text-white text-center rounded-xl font-semibold transition-colors shadow-lg shadow-accent/30">
+                  Daftar Paket Pro
                 </Link>
               </div>
 
