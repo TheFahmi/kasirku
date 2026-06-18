@@ -64,6 +64,12 @@
     <header class="topbar">
         <div class="brand"><span class="brand__mark">K</span><span class="brand__name">Kasir<b>Ku</b></span></div>
         <div class="topbar__actions">
+            <button class="iconbtn" id="shiftBtn" aria-label="Shift Kasir">
+                <svg class="ico ico--sm" viewBox="0 0 24 24">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </button>
             <button class="iconbtn" id="clearCartBtn" aria-label="Kosongkan keranjang">
                 <svg class="ico ico--sm" viewBox="0 0 24 24">
                     <path d="M4 7h16" /><path d="M9 7V5h6v2" /><path d="M6.5 7l.8 12.5h9.4L17.5 7" />
@@ -112,6 +118,10 @@
         <section class="view" id="view-reports">
             <div id="reports" style="padding-bottom:calc(var(--nav-h) + 100px)"></div>
         </section>
+        <section class="view" id="view-customers">
+            <div class="search search--sticky" style="margin-bottom:16px"><input type="search" id="searchCustomer" class="search__input" placeholder="Cari pelanggan..." /></div>
+            <div class="list" id="customersList" style="padding-bottom:calc(var(--nav-h) + 100px)"></div>
+        </section>
     </main>
 
     <!-- Cart bar -->
@@ -138,6 +148,11 @@
             <svg class="ico" viewBox="0 0 24 24">
                 <path d="M5 20V11" /><path d="M12 20V4" /><path d="M19 20v-6" />
             </svg><span>Laporan</span>
+        </button>
+        <button class="tab" data-view="customers">
+            <svg class="ico" viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg><span>Pelanggan</span>
         </button>
     </nav>
 
@@ -341,6 +356,17 @@
         </div>
     </div>
 
+    <!-- ===== Shift Modal ===== -->
+    <div class="modal" id="shiftModal" hidden>
+        <div class="modal__scrim" data-close="shiftModal"></div>
+        <div class="modal__panel">
+            <div class="modal__head">
+                <h2 id="shiftModalTitle">Kelola Shift Kasir</h2><button class="iconbtn" data-close="shiftModal">✕</button>
+            </div>
+            <div id="shiftContent"></div>
+        </div>
+    </div>
+
     <!-- ===== Payment Modal ===== -->
     <div class="modal" id="paymentModal" hidden>
         <div class="modal__scrim" data-close="paymentModal"></div>
@@ -348,7 +374,13 @@
             <div class="modal__head">
                 <h2>Pembayaran</h2><button class="iconbtn" data-close="paymentModal">✕</button>
             </div>
-            <div class="paybox paybox--total"><span>Total belanja</span><strong id="paymentTotal">Rp 0</strong></div>
+            <div class="paybox paybox--total" style="margin-bottom:12px"><span>Total belanja</span><strong id="paymentTotal">Rp 0</strong></div>
+            <label class="field" style="margin-bottom:12px">
+                <span class="field__label">Pelanggan (opsional)</span>
+                <select id="paymentCustomer" class="field__input">
+                    <option value="">-- Pelanggan Umum --</option>
+                </select>
+            </label>
             <div class="paymethods" id="payMethods"></div>
             <div id="cashSection">
                 <label class="field"><span class="field__label">Uang diterima</span>
@@ -465,7 +497,8 @@
                 <input type="hidden" id="productId" />
                 <label class="field"><span class="field__label">Nama produk</span><input type="text" id="productName" class="field__input" /></label>
                 <label class="field"><span class="field__label">SKU / Barcode <small style="font-weight:400;color:var(--muted)">(opsional)</small></span><input type="text" id="productSku" class="field__input" placeholder="Scan barcode disini..." /></label>
-                <label class="field"><span class="field__label">Harga dasar (Rp)</span><input type="number" id="productPrice" class="field__input" min="0" inputmode="numeric" /></label>
+                <label class="field"><span class="field__label">Harga jual (Rp)</span><input type="number" id="productPrice" class="field__input" min="0" inputmode="numeric" /></label>
+                <label class="field"><span class="field__label">Harga modal (Rp) <small style="font-weight:400;color:var(--muted)">(opsional, untuk Laba/Rugi)</small></span><input type="number" id="productCost" class="field__input" min="0" inputmode="numeric" /></label>
                 <label class="field"><span class="field__label">Kategori</span><input type="text" id="productCategory" class="field__input" list="categoryOptions" /><datalist id="categoryOptions"></datalist></label>
                 <label class="field"><span class="field__label">Stok</span><input type="number" id="productStock" class="field__input" min="0" value="0" inputmode="numeric" /></label>
                 <div style="margin-top:4px;margin-bottom:14px">

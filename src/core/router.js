@@ -1,6 +1,6 @@
 import { Events } from './events.js';
 
-const VIEWS = ['pos', 'history', 'reports'];
+const VIEWS = ['pos', 'history', 'reports', 'customers'];
 let _currentView = 'pos';
 
 function switchView(v) {

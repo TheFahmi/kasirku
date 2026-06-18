@@ -10,6 +10,7 @@ const BUILTIN_METHODS = [
     { id: 'cash',  label: 'Tunai',       type: 'cash',    builtin: true },
     { id: 'qris',  label: 'QRIS',        type: 'noncash', builtin: true },
     { id: 'debit', label: 'Kartu Debit', type: 'noncash', builtin: true },
+    { id: 'debt',  label: 'Kasbon / Piutang', type: 'debt', builtin: true },
 ];
 let customMethods = Storage.load(Storage.KEY.methods, []);
 const getPayMethods = () => [...BUILTIN_METHODS, ...customMethods];
@@ -20,6 +21,7 @@ function methodIcon(m) {
     if (m.id === 'cash')  return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>`;
     if (m.id === 'qris')  return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M21 21v-3"/></svg>`;
     if (m.id === 'debit') return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`;
+    if (m.id === 'debt')  return `<svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>`;
     if (m.type === 'cash') return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>`;
     return `<svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`;
 }
@@ -63,6 +65,8 @@ function updateChange() {
 function openPayment() {
     const t = AppState.cartTotal();
     document.getElementById('paymentTotal').textContent = formatRupiah(t);
+    document.getElementById('paymentCustomer').innerHTML = '<option value="">-- Pelanggan Umum --</option>' + 
+        AppState.state.customers.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
     document.getElementById('cashInput').value          = '';
     document.getElementById('paymentChange').textContent = formatRupiah(0);
     document.getElementById('quickCash').innerHTML = quickCash(t)
@@ -78,6 +82,12 @@ function openPayment() {
 function showOrderConfirm() {
     const total  = AppState.cartTotal();
     const isCash = getPayType(_payMethod) === 'cash';
+    const customerId = document.getElementById('paymentCustomer').value;
+    
+    if (_payMethod === 'debt' && !customerId) {
+        return UX.toast('Pilih pelanggan untuk opsi Kasbon');
+    }
+    
     if (isCash) {
         const cash = parseFloat(document.getElementById('cashInput').value) || 0;
         if (cash < total) return UX.toast('Uang tidak cukup');
@@ -107,13 +117,22 @@ function completeTx() {
         cash   = parseFloat(document.getElementById('cashInput').value) || 0;
         if (cash < total) return UX.toast('Uang tidak cukup');
         change = cash - total;
+    } else if (_payMethod === 'debt') {
+        cash = 0; change = 0;
     } else {
         cash = total; change = 0;
     }
     const cashier = (Auth.getAccount() || {}).user || 'Kasir';
     const note    = (document.getElementById('orderNote').value || '').trim();
+    
+    const customerId = document.getElementById('paymentCustomer').value || null;
+    const isDebt     = _payMethod === 'debt';
+    const activeShift= AppState.getActiveShift();
+    const shiftId    = activeShift ? activeShift.id : null;
+
     const tx = {
         id: uid(), no: AppState.nextTxNo(), date: new Date().toISOString(), cashier, note,
+        customerId, isDebt, shiftId,
         items:    AppState.state.cart.map(i => ({ ...i })),
         subtotal: AppState.cartSubtotal(),
         discount: AppState.getNominalDiscount(),

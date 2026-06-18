@@ -2129,12 +2129,14 @@ h1, h2, h3, h4, h5, h6 {
 
     /* Hide cart panel if not POS view */
     .app-layout[data-view="history"] #cartSheet,
-    .app-layout[data-view="reports"] #cartSheet {
+    .app-layout[data-view="reports"] #cartSheet,
+    .app-layout[data-view="customers"] #cartSheet {
         display: none !important;
     }
     
     .app-layout[data-view="history"],
-    .app-layout[data-view="reports"] {
+    .app-layout[data-view="reports"],
+    .app-layout[data-view="customers"] {
         grid-template-columns: 88px 1fr 0px;
     }
 }

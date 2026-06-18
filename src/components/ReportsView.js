@@ -16,6 +16,8 @@ function render() {
     const totalRev = txs.reduce((s, tx) => s + tx.total, 0);
     const totalTx = txs.length;
     const totalItems = txs.reduce((s, tx) => s + tx.items.reduce((sum, i) => sum + i.qty, 0), 0);
+    const totalCost = txs.reduce((s, tx) => s + tx.items.reduce((sum, i) => sum + ((i.cost || 0) * i.qty), 0), 0);
+    const profit = totalRev - totalCost;
     
     // 2. Payment Methods Donut Chart
     let methodsHTML = '';
@@ -109,8 +111,18 @@ function render() {
             </div>
             
             <div class="statcard" style="margin-bottom:12px">
-                <div class="statcard__label">Pendapatan Kotor</div>
-                <div class="statcard__value" style="color:var(--success)">${formatRupiah(totalRev)}</div>
+                <div class="statcard__label">Pendapatan Kotor (Omset)</div>
+                <div class="statcard__value" style="color:var(--ink)">${formatRupiah(totalRev)}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                <div class="statcard">
+                    <div class="statcard__label">Total Modal</div>
+                    <div class="statcard__value" style="color:var(--danger)">${formatRupiah(totalCost)}</div>
+                </div>
+                <div class="statcard">
+                    <div class="statcard__label">Laba Bersih</div>
+                    <div class="statcard__value" style="color:var(--success)">${formatRupiah(profit)}</div>
+                </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
                 <div class="statcard">

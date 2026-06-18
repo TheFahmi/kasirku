@@ -25,6 +25,8 @@ import { StockOpnameSheet } from './components/StockOpnameSheet.js';
 import { OpnameHistorySheet } from './components/OpnameHistorySheet.js';
 import { HistoryView } from './components/HistoryView.js';
 import { ReportsView } from './components/ReportsView.js';
+import { CustomersView } from './components/CustomersView.js';
+import { ShiftModal } from './components/ShiftModal.js';
 
 // Wire up lazy refs to break circular dependencies
 setAppStateRef(AppState);
@@ -49,7 +51,7 @@ function init() {
         Auth, Topbar, CategoryChips, ProductGrid, CartBar, CartSheet,
         ConfirmDialog, VariantModal, PaymentModal, ReceiptModal, ProductModal,
         SettingsSheet, StoreModal, PayMethodsModal, ProductsSheet, StockOpnameSheet,
-        OpnameHistorySheet, HistoryView, ReportsView, Router
+        OpnameHistorySheet, HistoryView, ReportsView, CustomersView, ShiftModal, Router
     ].forEach(m => { if (m && m.mount) m.mount(); });
 
     document.getElementById('searchInput').value = '';

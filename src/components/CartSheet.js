@@ -22,12 +22,13 @@ function addToCart(id, variantId) {
     const v       = variantId ? (p.variants || []).find(x => x.id === variantId) : null;
     const cartKey = variantId ? `${id}::${variantId}` : id;
     const price   = v ? (v.price ?? p.price) : p.price;
+    const cost    = v ? (v.cost ?? p.cost ?? 0) : (p.cost ?? 0);
     const name    = v ? `${p.name} - ${v.name}` : p.name;
     const it      = AppState.state.cart.find(x => x.cartKey === cartKey);
     const totalQty = AppState.state.cart.filter(x => x.id === id).reduce((s, x) => s + x.qty, 0);
     if (totalQty >= p.stock) return UX.toast('Stok tidak mencukupi');
     if (it) it.qty++;
-    else AppState.state.cart.push({ cartKey, id: p.id, variantId: variantId || null, name, price, category: p.category, qty: 1 });
+    else AppState.state.cart.push({ cartKey, id: p.id, variantId: variantId || null, name, price, cost, category: p.category, qty: 1 });
     Modal.closeModal('variantModal');
     UX.haptic(15); UX.playSound('pop'); UX.popCartBar();
     UX.toast(name + ' ditambahkan');

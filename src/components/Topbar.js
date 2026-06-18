@@ -37,6 +37,9 @@ export const Topbar = {
             if (avatarEl) avatarEl.textContent = n.slice(0, 1).toUpperCase();
             document.getElementById('settingsSheet').hidden = false;
         });
+        document.getElementById('shiftBtn').addEventListener('click', () => {
+            Events.emit('shift:open');
+        });
         document.getElementById('darkModeBtn').addEventListener('click', toggleTheme);
     }
 };

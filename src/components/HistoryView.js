@@ -32,14 +32,19 @@ function render() {
         const ds = new Date(tx.date).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
         const txNo = tx.no || '#' + tx.id.slice(0, 8).toUpperCase();
         const method = PaymentModal.getPayLabel(tx.method);
+        const customer = tx.customerId ? AppState.state.customers.find(c => c.id === tx.customerId) : null;
+        const cName = customer ? customer.name : '';
+        const debtLabel = tx.isDebt ? `<span style="font-size:10px;padding:2px 6px;background:var(--danger);color:white;border-radius:4px;font-weight:700;margin-left:8px">BELUM LUNAS</span>` :
+                          tx.debtPaidAt ? `<span style="font-size:10px;padding:2px 6px;background:var(--success);color:white;border-radius:4px;font-weight:700;margin-left:8px">KASBON LUNAS</span>` : '';
+                          
         return `<button class="txcard" data-tx="${tx.id}">
                 <div class="txcard__head">
-                    <span class="txcard__no">${esc(txNo)}</span>
+                    <div style="display:flex;align-items:center"><span class="txcard__no">${esc(txNo)}</span>${debtLabel}</div>
                     <span class="txcard__date">${ds}</span>
                 </div>
                 <div class="txcard__body">
                     <div class="txcard__info">
-                        <div class="txcard__qty">${tx.items.length} item</div>
+                        <div class="txcard__qty">${tx.items.length} item ${cName ? `• <b>${esc(cName)}</b>` : ''}</div>
                         <div class="txcard__method">${method}</div>
                     </div>
                     <div class="txcard__total">${formatRupiah(tx.total)}</div>

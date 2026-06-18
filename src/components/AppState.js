@@ -36,6 +36,8 @@ export const state = {
     transactions: Storage.load(Storage.KEY.tx, []),
     cart: Storage.load(Storage.KEY.cart, []),
     opnameHistory: Storage.load(Storage.KEY.opname, []),
+    customers: Storage.load(Storage.KEY.customers, []),
+    shifts: Storage.load(Storage.KEY.shifts, []),
     category: 'Semua',
     search: '',
     discount: _sd,
@@ -68,6 +70,8 @@ export const persist = () => {
     Storage.save(Storage.KEY.cart, state.cart);
     Storage.save(Storage.KEY.discount, state.discount);
     Storage.save(Storage.KEY.opname, state.opnameHistory);
+    Storage.save(Storage.KEY.customers, state.customers);
+    Storage.save(Storage.KEY.shifts, state.shifts);
 };
 
 export const persistStore = () => Storage.save(Storage.KEY.store, storeInfo);
@@ -79,8 +83,9 @@ export const getNominalDiscount = () => {
 export const cartTotal = () => Math.max(0, cartSubtotal() - getNominalDiscount());
 export const cartCount = () => state.cart.reduce((s, i) => s + i.qty, 0);
 export const cartQty = id => (state.cart.find(x => x.id === id) || {}).qty || 0;
+export const getActiveShift = () => state.shifts.find(s => !s.endTime) || null;
 
 export const AppState = {
     state, storeInfo, freshSeed, nextTxNo, persist, persistStore,
-    cartSubtotal, getNominalDiscount, cartTotal, cartCount, cartQty
+    cartSubtotal, getNominalDiscount, cartTotal, cartCount, cartQty, getActiveShift
 };
