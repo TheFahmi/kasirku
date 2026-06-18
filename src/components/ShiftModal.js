@@ -61,6 +61,10 @@ export const ShiftModal = {
             openModal('shiftModal');
         });
         
+        Events.on('shift:updated', checkShiftReminder);
+        setInterval(checkShiftReminder, 60000); // Check every minute
+        checkShiftReminder(); // Initial check
+        
         document.getElementById('shiftContent').addEventListener('click', e => {
             if (e.target.id === 'openShiftBtn') {
                 const startCash = parseInt(document.getElementById('shiftStartCash').value) || 0;
@@ -106,3 +110,32 @@ export const ShiftModal = {
         });
     }
 };
+
+export function checkShiftReminder() {
+    const banner = document.getElementById('shiftAlertBanner');
+    if (!banner) return;
+    
+    const active = AppState.getActiveShift();
+    if (!active) {
+        banner.innerHTML = `
+            <div style="background:var(--danger);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r-md);margin-bottom:16px;box-shadow:0 4px 12px rgba(239,68,68,0.2)">
+                <span style="flex:1">⚠️ Anda belum membuka Shift hari ini.</span>
+                <button class="btn btn--sm" style="background:#fff;color:var(--danger);padding:6px 12px;font-weight:700" onclick="document.getElementById('shiftBtn').click()">Buka Shift</button>
+            </div>
+        `;
+        return;
+    }
+    
+    const hours = (Date.now() - active.startTime) / (1000 * 60 * 60);
+    if (hours > 12) {
+        banner.innerHTML = `
+            <div style="background:var(--warning);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r-md);margin-bottom:16px;box-shadow:0 4px 12px rgba(245,158,11,0.2)">
+                <span style="flex:1">⏰ Shift sudah berjalan > 12 jam.</span>
+                <button class="btn btn--sm" style="background:#fff;color:var(--warning);padding:6px 12px;font-weight:700" onclick="document.getElementById('shiftBtn').click()">Tutup Shift</button>
+            </div>
+        `;
+        return;
+    }
+    
+    banner.innerHTML = '';
+}
