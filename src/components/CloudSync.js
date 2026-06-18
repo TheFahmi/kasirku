@@ -107,11 +107,14 @@ export const CloudSync = {
         document.getElementById('syncPullBtn').addEventListener('click', handlePull);
         
         // Load remembered storeId if any (from local storage)
-        const savedId = localStorage.getItem('kasirku.sync.storeid');
-        if (savedId) {
-            const input = document.getElementById('syncStoreId');
-            if (input) input.value = savedId;
+        let savedId = localStorage.getItem('kasirku.sync.storeid');
+        if (!savedId) {
+            savedId = window.crypto && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('kasirku.sync.storeid', savedId);
         }
+        
+        const input = document.getElementById('syncStoreId');
+        if (input) input.value = savedId;
 
         // Save storeId on change
         document.getElementById('syncStoreId').addEventListener('change', e => {

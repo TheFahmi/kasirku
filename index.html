@@ -413,7 +413,10 @@
                 <p style="font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:16px">Semua data Anda akan dienkripsi (digembok) sebelum dikirim ke server. Server tidak bisa membaca data Anda.</p>
             </div>
             <form id="cloudSyncForm" onsubmit="event.preventDefault()">
-                <label class="field"><span class="field__label">Store ID (Username)</span><input type="text" id="syncStoreId" class="field__input" placeholder="Contoh: tokoku_123" required autocomplete="username" /></label>
+                <label class="field"><span class="field__label">Store ID (Otomatis dibuat / Tempel di sini)</span><input type="text" id="syncStoreId" class="field__input" placeholder="Otomatis terisi UUID" required autocomplete="username" /></label>
+                <div style="font-size:12px;color:var(--muted);margin-top:-8px;margin-bottom:12px;text-align:right">
+                    Salin ID ini ke perangkat lain untuk menarik data.
+                </div>
                 <label class="field"><span class="field__label">Password Enkripsi</span><input type="password" id="syncPassword" class="field__input" placeholder="Wajib untuk enkripsi" required autocomplete="current-password" /></label>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
                     <button type="button" class="btn btn--outline" id="syncPullBtn">Tarik Data (Pull)</button>
