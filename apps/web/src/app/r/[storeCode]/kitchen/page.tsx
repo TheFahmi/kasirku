@@ -7,7 +7,7 @@ export default function KitchenDashboard({ params }: { params: { storeCode: stri
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`http://localhost:3005/orders/kitchen?storeCode=${params.storeCode}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005'}/orders/kitchen?storeCode=${params.storeCode}`);
       if (res.ok) setOrders(await res.json());
     } catch (e) {
       console.error('Failed to fetch kitchen orders', e);

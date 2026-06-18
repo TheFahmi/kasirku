@@ -40,6 +40,8 @@ interface PosState {
   submitOrder: (paymentMethod: string, amountPaid: number, storeCode?: string) => Promise<boolean>;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+
 export const usePosStore = create<PosState>()(
   persist(
     (set, get) => ({
@@ -52,7 +54,7 @@ export const usePosStore = create<PosState>()(
 
       fetchProducts: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch(`http://localhost:3005/products?storeCode=${storeCode}`);
+          const res = await fetch(`${API_URL}/products?storeCode=${storeCode}`);
           if (res.ok) set({ products: await res.json() });
         } catch (e) {
           console.error(e);
@@ -61,7 +63,7 @@ export const usePosStore = create<PosState>()(
       
       fetchCustomers: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch(`http://localhost:3005/customers?storeCode=${storeCode}`);
+          const res = await fetch(`${API_URL}/customers?storeCode=${storeCode}`);
           if (res.ok) set({ customers: await res.json() });
         } catch (e) {
           console.error(e);
@@ -70,7 +72,7 @@ export const usePosStore = create<PosState>()(
       
       fetchTransactions: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch(`http://localhost:3005/transactions?storeCode=${storeCode}`);
+          const res = await fetch(`${API_URL}/transactions?storeCode=${storeCode}`);
           if (res.ok) set({ transactions: await res.json() });
         } catch (e) {
           console.error(e);
@@ -94,7 +96,7 @@ export const usePosStore = create<PosState>()(
             createdAt: new Date().toISOString()
           };
 
-          const res = await fetch('http://localhost:3005/transactions', {
+          const res = await fetch(`${API_URL}/transactions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(tx)

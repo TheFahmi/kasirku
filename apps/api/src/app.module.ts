@@ -13,17 +13,26 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { OrdersModule } from './orders/orders.module';
 import { TenantsModule } from './tenants/tenants.module';
 
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5435,
-      username: 'kasirku',
-      password: 'password123',
-      database: 'kasirku',
-      entities: [Customer, Product, Transaction, Order, Tenant],
-      synchronize: true, // Auto create schemas
+    ConfigModule.forRoot({
+      isGlobal: true, // makes config available everywhere
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 5435),
+        username: configService.get<string>('DB_USERNAME', 'kasirku'),
+        password: configService.get<string>('DB_PASSWORD', 'password123'),
+        database: configService.get<string>('DB_DATABASE', 'kasirku'),
+        entities: [Customer, Product, Transaction, Order, Tenant],
+        synchronize: true, // Auto create schemas
+      }),
+      inject: [ConfigService],
     }),
     ProductsModule,
     CustomersModule,

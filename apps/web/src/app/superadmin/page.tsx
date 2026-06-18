@@ -9,10 +9,11 @@ export default function SuperAdminPage() {
   const [name, setName] = useState('');
   const [storeCode, setStoreCode] = useState('');
   const [type, setType] = useState('resto');
+  const [ownerId, setOwnerId] = useState(''); // E.g., company-x
 
   const fetchTenants = async () => {
     try {
-      const res = await fetch('http://localhost:3005/tenants');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005'}/tenants`);
       if (res.ok) setTenants(await res.json());
     } catch (e) {
       console.error('Failed to fetch tenants', e);
@@ -28,16 +29,22 @@ export default function SuperAdminPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !storeCode) return;
+    
+    // Default subscription gives 30 days of active period
+    const validUntil = new Date();
+    validUntil.setDate(validUntil.getDate() + 30);
+
     try {
-      const res = await fetch('http://localhost:3005/tenants', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005'}/tenants`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, storeCode, type })
+        body: JSON.stringify({ name, storeCode, type, ownerId, subscriptionStatus: 'active', validUntil })
       });
       if (res.ok) {
         setName('');
         setStoreCode('');
         setType('resto');
+        setOwnerId('');
         fetchTenants();
       }
     } catch (e) {
@@ -83,6 +90,16 @@ export default function SuperAdminPage() {
               />
             </div>
             <div>
+              <label className="block text-sm font-medium text-muted mb-1">Owner / Company ID (Optional)</label>
+              <input 
+                type="text" 
+                value={ownerId} 
+                onChange={e => setOwnerId(e.target.value)} 
+                className="w-full bg-bg border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                placeholder="e.g., pt-kopi-senja"
+              />
+            </div>
+            <div>
               <label className="block text-sm font-medium text-muted mb-1">Business Type</label>
               <select 
                 value={type} 
@@ -123,8 +140,10 @@ export default function SuperAdminPage() {
                       {t.name.charAt(0)}
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{t.name}</h4>
+                      <h4 className="font-bold text-lg">{t.name} {t.subscriptionStatus === 'active' ? <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full ml-2">Active</span> : <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full ml-2">Expired</span>}</h4>
                       <p className="text-sm text-muted">Code: <span className="font-mono text-accent">{t.storeCode}</span> &bull; {t.type.toUpperCase()}</p>
+                      {t.ownerId && <p className="text-xs text-muted mt-1">Owner: {t.ownerId}</p>}
+                      {t.validUntil && <p className="text-xs text-muted">Valid until: {new Date(t.validUntil).toLocaleDateString()}</p>}
                     </div>
                   </div>
                   <div className="flex space-x-2">
