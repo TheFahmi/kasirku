@@ -24,8 +24,9 @@ export default function POSPage() {
     <>
       <header className="topbar">
         <div className="search">
-          <svg className="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg className="search__ico ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input 
+            className="search__input"
             type="text" 
             placeholder="Cari menu, produk, paket..." 
             value={search}
@@ -36,8 +37,8 @@ export default function POSPage() {
       
       <div className="view view--active">
         <CategoryChips 
-          activeCat={activeCat} 
-          onSelect={setActiveCat} 
+          category={activeCat} 
+          onCategoryChange={setActiveCat} 
         />
         <ProductGrid 
           search={search} 
@@ -46,7 +47,7 @@ export default function POSPage() {
         />
       </div>
 
-      <CartBar onOpenCart={() => setIsCartOpen(true)} />
+      <CartBar onOpen={() => setIsCartOpen(true)} />
 
       <CartSheet 
         isOpen={isCartOpen} 

@@ -4,8 +4,7 @@ import React from 'react';
 export default function PosLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="pos-app">
-      {/* Topbar will go here */}
-      <main className="view view--active pb-[64px]">
+      <main className="app-main">
         {children}
       </main>
       {/* Navbar will go here */}
