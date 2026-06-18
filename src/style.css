@@ -1996,12 +1996,14 @@ h1, h2, h3, h4, h5, h6 {
 
     .tabbar .tab {
         width: 100%;
+        flex: none !important;
         flex-direction: column;
         justify-content: center;
         padding: 14px 4px;
         border-radius: 14px;
         gap: 6px;
         opacity: 0.6;
+        margin-bottom: 4px;
     }
 
     .tabbar .tab--active {
@@ -2051,10 +2053,29 @@ h1, h2, h3, h4, h5, h6 {
         display: none !important;
     }
 
-    /* Fix content paddings */
-    .product-grid, #reports, .list {
+    /* Fix content paddings and enhance grids */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
         padding-bottom: 24px !important;
     }
+    .stat-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+    }
+    #reports, .list {
+        padding-bottom: 24px !important;
+    }
+    
+    .txcard {
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+    }
+    .txcard__no { font-size: 15px; }
+    .txcard__total { font-size: 16px; }
+
     .cartbar {
         display: none !important;
     }
