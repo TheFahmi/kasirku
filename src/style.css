@@ -2040,17 +2040,52 @@ h1, h2, h3, h4, h5, h6 {
         height: 100% !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        padding-bottom: 24px !important;
+        padding: 0 !important; /* Reset padding for custom layout */
         transform: none !important;
         animation: none !important;
         display: flex !important;
         flex-direction: column !important;
         inset: auto !important;
+        background: var(--surface-2) !important; /* distinct background */
     }
     
     #cartSheet .sheet__grip,
     #cartSheet .sheet__head button[data-close="cartSheet"] {
         display: none !important;
+    }
+
+    /* Cart Redesign for Desktop */
+    #cartSheet .sheet__head {
+        padding: 24px 20px 16px;
+        margin: 0;
+        background: var(--surface);
+        border-bottom: 1px dashed var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        z-index: 2;
+    }
+    #cartSheet .sheet__head h2 {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--ink);
+    }
+    #cartSheet .cart-items {
+        padding: 0 16px 24px;
+    }
+    #cartSheet .citem {
+        background: var(--surface);
+        padding: 14px;
+        border-radius: 14px;
+        margin-top: 12px;
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        border-bottom: none;
+    }
+    #cartSheet .summary {
+        background: var(--surface);
+        padding: 24px 20px;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
+        z-index: 2;
     }
 
     /* Fix content paddings and enhance grids */
