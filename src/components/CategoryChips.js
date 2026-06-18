@@ -18,6 +18,7 @@ export const CategoryChips = {
             render();
             Events.emit('products:filter');
         });
+        Events.on('products:updated', render);
     },
     render
 };

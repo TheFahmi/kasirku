@@ -37,6 +37,10 @@ function openProductForm(id) {
     document.getElementById('productPinned').checked = p ? !!p.pinned : false;
     document.getElementById('deleteProductBtn').hidden = !p;
     document.getElementById('categoryOptions').innerHTML = getCategories().filter(c => c !== 'Semua').map(c => `<option value="${esc(c)}">`).join('');
+    
+    const tpl = document.getElementById('laundryServiceTemplates');
+    if (tpl) tpl.style.display = (!p && AppState.state.bizMode === 'service') ? 'block' : 'none';
+
     renderVariantRows();
     openModal('productModal');
 }
@@ -47,6 +51,34 @@ export const ProductModal = {
         Events.on('product:add', () => openProductForm());
         Events.on('products:manage', () => { Events.emit('productsSheet:open'); });
         document.getElementById('addVariantBtn').addEventListener('click', () => { _editVariants.push({ id: uid(), name: '', price: null, cost: null }); renderVariantRows(); });
+        
+        const tplKil = document.getElementById('tplLaundryKiloan');
+        if (tplKil) tplKil.addEventListener('click', () => {
+            document.getElementById('productName').value = 'Cuci Pakaian (Per Kg)';
+            document.getElementById('productCategory').value = 'Laundry Kiloan';
+            document.getElementById('productPrice').value = '7000';
+            _editVariants = [
+                { id: uid(), name: 'Reguler (3 Hari)', price: 7000 },
+                { id: uid(), name: 'Kilat (1 Hari)', price: 10000 },
+                { id: uid(), name: 'Express (6 Jam)', price: 15000 }
+            ];
+            renderVariantRows();
+            UX.toast('Template Laundry Kiloan diterapkan');
+        });
+
+        const tplSat = document.getElementById('tplLaundrySatuan');
+        if (tplSat) tplSat.addEventListener('click', () => {
+            document.getElementById('productName').value = 'Cuci Karpet / Selimut';
+            document.getElementById('productCategory').value = 'Laundry Satuan';
+            document.getElementById('productPrice').value = '25000';
+            _editVariants = [
+                { id: uid(), name: 'Reguler', price: 25000 },
+                { id: uid(), name: 'Express', price: 35000 }
+            ];
+            renderVariantRows();
+            UX.toast('Template Laundry Satuan diterapkan');
+        });
+
         document.getElementById('variantRows').addEventListener('input', e => {
             const el = e.target; const i = parseInt(el.dataset.vi); if (isNaN(i)) return;
             if (el.dataset.vf === 'name') _editVariants[i].name = el.value;
