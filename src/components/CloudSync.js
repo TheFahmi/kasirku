@@ -136,7 +136,7 @@ export const CloudSync = {
         
         // Load remembered storeId if any (from local storage)
         let savedId = localStorage.getItem('kasirku.sync.storeid');
-        if (!savedId) {
+        if (!savedId || savedId.trim() === '' || savedId === 'null' || savedId === 'undefined') {
             // Generate a 6-character random alphanumeric ID
             savedId = Math.random().toString(36).substring(2, 8).toUpperCase();
             localStorage.setItem('kasirku.sync.storeid', savedId);
