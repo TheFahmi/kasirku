@@ -1,8 +1,9 @@
 version: '3.8'
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: kasirku-postgres
+    platform: linux/arm64
     environment:
       POSTGRES_USER: kasirku
       POSTGRES_PASSWORD: password123
@@ -11,6 +12,37 @@ services:
       - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build: 
+      context: ./apps/api
+    container_name: kasirku-api
+    platform: linux/arm64
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=kasirku
+      - DB_PASSWORD=password123
+      - DB_DATABASE=kasirku
+      - PORT=3005
+    ports:
+      - "3005:3005"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  web:
+    build: 
+      context: ./apps/web
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:3005
+    container_name: kasirku-web
+    platform: linux/arm64
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
     restart: unless-stopped
 
 volumes:
