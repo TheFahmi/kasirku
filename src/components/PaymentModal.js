@@ -168,7 +168,24 @@ export const PaymentModal = {
         Events.on('payment:open', openPayment);
         document.getElementById('payMethods').addEventListener('click', e => {
             const btn = e.target.closest('[data-method]');
-            if (btn) setPayMethod(btn.dataset.method);
+            if (btn) {
+                const method = btn.dataset.method;
+                const customerId = document.getElementById('paymentCustomer').value;
+                if (method === 'debt' && !customerId) {
+                    UX.toast('Pilih pelanggan terlebih dahulu untuk kasbon');
+                    const sel = document.getElementById('paymentCustomer');
+                    sel.style.boxShadow = '0 0 0 2px var(--danger)';
+                    setTimeout(() => sel.style.boxShadow = '', 1500);
+                    return;
+                }
+                setPayMethod(method);
+            }
+        });
+        document.getElementById('paymentCustomer').addEventListener('change', e => {
+            if (!e.target.value && getCurrentPayMethod() === 'debt') {
+                setPayMethod('cash');
+                UX.toast('Metode dikembalikan ke Tunai');
+            }
         });
         document.getElementById('cashInput').addEventListener('input', updateChange);
         document.getElementById('quickCash').addEventListener('click', e => {
