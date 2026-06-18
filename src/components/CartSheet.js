@@ -119,6 +119,7 @@ export const CartSheet = {
             Events.emit('cart:updated');
             render();
         });
+        render(); // render initial state on mount
     },
     render,
     addToCart
