@@ -19,6 +19,8 @@ function switchView(v) {
     const clearBtn = document.getElementById('clearCartBtn');
     if (cartBar) cartBar.hidden = v !== 'pos';
     if (clearBtn) clearBtn.style.visibility = v === 'pos' ? 'visible' : 'hidden';
+    const appLayout = document.getElementById('appLayout');
+    if (appLayout) appLayout.setAttribute('data-view', v);
     document.querySelectorAll('.search').forEach(s => s.setAttribute('data-hide', 'false'));
     window._lastScrollY = 0;
     Events.emit('view:change', { view: v });

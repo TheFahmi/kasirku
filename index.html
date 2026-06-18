@@ -59,6 +59,7 @@
         <p class="auth__hint" id="authHint">Lupa sandi akan mereset seluruh data.</p>
     </div>
 
+    <div class="app-layout" id="appLayout">
     <!-- ===== Topbar ===== -->
     <header class="topbar">
         <div class="brand"><span class="brand__mark">K</span><span class="brand__name">Kasir<b>Ku</b></span></div>
@@ -140,30 +141,6 @@
         </button>
     </nav>
 
-    <!-- ===== Products Sheet (full-screen) ===== -->
-    <div class="sheet sheet--full" id="productsSheet" hidden>
-        <div class="sheet__scrim" data-close="productsSheet"></div>
-        <div class="sheet__panel">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;flex-shrink:0">
-                <h2 style="font-size:17px;font-weight:700">Kelola Produk</h2>
-                <div style="display:flex;gap:4px">
-                    <button class="btn btn--ghost" id="addProductBtn" style="padding:8px 14px;font-size:13px">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-                        Tambah
-                    </button>
-                    <button class="iconbtn" data-close="productsSheet">✕</button>
-                </div>
-            </div>
-            <div style="padding:10px 16px 0;flex-shrink:0;position:relative">
-                <svg class="ico ico--sm search__ico" viewBox="0 0 24 24" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);color:var(--muted)">
-                    <circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/>
-                </svg>
-                <input type="search" id="searchProductsInput" class="search__input" placeholder="Cari produk" />
-            </div>
-            <div class="list" id="productList" style="overflow-y:auto;flex:1;padding:12px 16px 24px"></div>
-        </div>
-    </div>
-
     <!-- ===== Cart Sheet ===== -->
     <div class="sheet" id="cartSheet" hidden>
         <div class="sheet__scrim" data-close="cartSheet"></div>
@@ -192,6 +169,31 @@
                 <input type="text" id="orderNote" class="field__input" placeholder="Contoh: Meja 5, tanpa bawang, dll" />
             </label>
             <button class="btn btn--primary btn--block btn--lg" id="checkoutBtn">Lanjut Bayar</button>
+        </div>
+    </div>
+    </div> <!-- end app-layout -->
+
+    <!-- ===== Products Sheet (full-screen) ===== -->
+    <div class="sheet sheet--full" id="productsSheet" hidden>
+        <div class="sheet__scrim" data-close="productsSheet"></div>
+        <div class="sheet__panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;flex-shrink:0">
+                <h2 style="font-size:17px;font-weight:700">Kelola Produk</h2>
+                <div style="display:flex;gap:4px">
+                    <button class="btn btn--ghost" id="addProductBtn" style="padding:8px 14px;font-size:13px">
+                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        Tambah
+                    </button>
+                    <button class="iconbtn" data-close="productsSheet">✕</button>
+                </div>
+            </div>
+            <div style="padding:10px 16px 0;flex-shrink:0;position:relative">
+                <svg class="ico ico--sm search__ico" viewBox="0 0 24 24" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);color:var(--muted)">
+                    <circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/>
+                </svg>
+                <input type="search" id="searchProductsInput" class="search__input" placeholder="Cari produk" />
+            </div>
+            <div class="list" id="productList" style="overflow-y:auto;flex:1;padding:12px 16px 24px"></div>
         </div>
     </div>
 
