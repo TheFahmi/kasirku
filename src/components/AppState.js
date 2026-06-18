@@ -3,18 +3,22 @@ import { Events } from '../core/events.js';
 import { uid, formatRupiah } from '../utils/format.js';
 
 const SEED_PRODUCTS = [
-    { name: 'Nasi Goreng', price: 15000, category: 'Makanan', stock: 50 },
-    { name: 'Mie Ayam', price: 13000, category: 'Makanan', stock: 40 },
+    // --- F&B ---
+    { name: 'Nasi Goreng Spesial', price: 15000, category: 'Makanan', stock: 50 },
     { name: 'Ayam Geprek', price: 18000, category: 'Makanan', stock: 30 },
-    { name: 'Roti Bakar', price: 12000, category: 'Makanan', stock: 25 },
+    { name: 'Kopi Susu Gula Aren', price: 12000, category: 'Minuman', stock: 60 },
     { name: 'Es Teh Manis', price: 5000, category: 'Minuman', stock: 100 },
-    { name: 'Es Jeruk', price: 7000, category: 'Minuman', stock: 80 },
-    { name: 'Kopi Susu', price: 12000, category: 'Minuman', stock: 60 },
-    { name: 'Air Mineral', price: 4000, category: 'Minuman', stock: 120 },
-    { name: 'Keripik Kentang', price: 10000, category: 'Snack', stock: 45 },
-    { name: 'Coklat Batang', price: 9000, category: 'Snack', stock: 35 },
-    { name: 'Biskuit', price: 8000, category: 'Snack', stock: 50 },
-    { name: 'Permen', price: 2000, category: 'Snack', stock: 200 },
+    // --- Retail / Warung ---
+    { name: 'Indomie Goreng', price: 3500, category: 'Sembako', stock: 120 },
+    { name: 'Beras Pandan Wangi 5Kg', price: 75000, category: 'Sembako', stock: 15 },
+    { name: 'Sabun Mandi Cair 450ml', price: 18000, category: 'Kebutuhan Harian', stock: 25 },
+    { name: 'Pasta Gigi 190g', price: 12500, category: 'Kebutuhan Harian', stock: 30 },
+    // --- Laundry / Jasa ---
+    { name: 'Cuci Setrika Reguler (Per Kg)', price: 7000, category: 'Laundry Kiloan', stock: 999 },
+    { name: 'Cuci Kering Kilat (Per Kg)', price: 10000, category: 'Laundry Kiloan', stock: 999 },
+    { name: 'Setrika Saja (Per Kg)', price: 5000, category: 'Laundry Kiloan', stock: 999 },
+    { name: 'Cuci Karpet Tebal (Per M2)', price: 15000, category: 'Laundry Satuan', stock: 999 },
+    { name: 'Cuci Bedcover (Besar)', price: 25000, category: 'Laundry Satuan', stock: 999 },
 ];
 
 export const freshSeed = () => SEED_PRODUCTS.map(p => ({ id: uid(), ...p }));
