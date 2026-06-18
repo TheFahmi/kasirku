@@ -69,6 +69,18 @@ export const SettingsSheet = {
             if (!ok) return; closeModal('settingsSheet'); Auth.logout();
         });
         document.getElementById('storeBtn').addEventListener('click', () => { Events.emit('store:open'); });
+        
+        document.getElementById('loadDemoDataBtn').addEventListener('click', async () => {
+            const ok = await ConfirmDialog.show('Ganti semua produk dengan Data Demo Baru? (Produk lama akan terhapus)', 'Ya, Ganti');
+            if (ok) {
+                AppState.state.products = AppState.freshSeed();
+                Storage.save(Storage.KEY.products, AppState.state.products);
+                Events.emit('products:updated');
+                UX.toast('Data Demo berhasil dimuat!');
+                closeModal('settingsSheet');
+            }
+        });
+
         document.getElementById('manageProductsBtn').addEventListener('click', () => { Events.emit('productsSheet:open'); closeModal('settingsSheet'); });
         document.getElementById('payMethodsBtn').addEventListener('click', () => { Events.emit('payMethods:open'); closeModal('settingsSheet'); });
         document.getElementById('syncBtn').addEventListener('click', () => { openModal('cloudSyncModal'); closeModal('settingsSheet'); });
