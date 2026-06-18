@@ -74,6 +74,26 @@ function openPayment() {
         .map(v => `<button data-cash="${v}">${v === t ? 'Uang pas' : formatRupiah(v)}</button>`).join('');
     document.getElementById('payMethods').innerHTML = getPayMethods()
         .map(m => `<button type="button" class="paymethod" data-method="${m.id}">${methodIcon(m)}<span>${esc(m.label)}</span></button>`).join('');
+    
+    // Auto-fill Priority & Due Date based on Cart content
+    if (AppState.state.bizMode === 'service' || AppState.state.bizMode === 'fb') {
+        const cartStr = JSON.stringify(AppState.state.cart).toLowerCase();
+        const isExpress = cartStr.includes('express');
+        const isKilat = cartStr.includes('kilat');
+        
+        const prioEl = document.getElementById('payPrioritySelect');
+        if (prioEl) prioEl.value = (isExpress || isKilat) ? 'high' : 'normal';
+
+        if (AppState.state.bizMode === 'service') {
+            const dueEl = document.getElementById('payDueDate');
+            if (dueEl) {
+                if (isExpress) dueEl.value = 'Hari Ini';
+                else if (isKilat) dueEl.value = 'Besok';
+                else dueEl.value = 'Lusa';
+            }
+        }
+    }
+
     setPayMethod('cash');
     closeModal('cartSheet');
     openModal('paymentModal');
