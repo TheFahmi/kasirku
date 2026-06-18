@@ -4,15 +4,14 @@ import { usePosStore } from '@/store/usePosStore';
 import { formatRupiah } from '@/utils/format';
 import { useRouter } from 'next/navigation';
 
-export default function LaundryDashboard() {
+export default function LaundryDashboard({ params }: { params: { storeCode: string } }) {
   const router = useRouter();
   const { customers, transactions, fetchCustomers, fetchTransactions } = usePosStore();
   const [customer, setCustomer] = useState<any>(null);
   
-  // Dummy authentication check using local storage or just random mock
   useEffect(() => {
-    fetchCustomers();
-    fetchTransactions();
+    fetchCustomers(params.storeCode);
+    fetchTransactions(params.storeCode);
     
     // For demo purposes, we pick the first customer as logged in
     const timer = setTimeout(() => {

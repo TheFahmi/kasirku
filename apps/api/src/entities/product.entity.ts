@@ -20,6 +20,12 @@ export class Product {
   @Column({ default: 'pcs' })
   unit: string;
 
+  @Column({ default: 'kasirku-main' })
+  storeCode: string;
+
+  @Column({ nullable: true })
+  image: string;
+
   @Column({ nullable: true })
   code: string;
 

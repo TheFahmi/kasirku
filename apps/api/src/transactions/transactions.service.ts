@@ -10,8 +10,8 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transaction>,
   ) {}
 
-  findAll(): Promise<Transaction[]> {
-    return this.transactionsRepository.find();
+  findAll(storeCode: string = 'kasirku-main'): Promise<Transaction[]> {
+    return this.transactionsRepository.find({ where: { storeCode } });
   }
 
   findOne(id: string): Promise<Transaction | null> {

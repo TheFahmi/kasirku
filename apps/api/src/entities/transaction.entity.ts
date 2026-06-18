@@ -46,6 +46,9 @@ export class Transaction {
   @Column({ nullable: true })
   cashier: string;
 
+  @Column({ default: 'kasirku-main' })
+  storeCode: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

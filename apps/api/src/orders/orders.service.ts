@@ -10,20 +10,22 @@ export class OrdersService {
     private ordersRepository: Repository<Order>,
   ) {}
 
-  findAll(): Promise<Order[]> {
-    return this.ordersRepository.find();
+  findAll(storeCode: string = 'kasirku-main'): Promise<Order[]> {
+    return this.ordersRepository.find({ where: { storeCode } });
   }
 
-  getKitchenOrders(): Promise<Order[]> {
+  getKitchenOrders(storeCode: string = 'kasirku-main'): Promise<Order[]> {
     return this.ordersRepository.createQueryBuilder('order')
       .where('order.status IN (:...statuses)', { statuses: ['pending', 'cooking'] })
+      .andWhere('order.storeCode = :storeCode', { storeCode })
       .orderBy('order.createdAt', 'ASC')
       .getMany();
   }
 
-  getQueueOrders(): Promise<Order[]> {
+  getQueueOrders(storeCode: string = 'kasirku-main'): Promise<Order[]> {
     return this.ordersRepository.createQueryBuilder('order')
       .where('order.status IN (:...statuses)', { statuses: ['cooking', 'ready'] })
+      .andWhere('order.storeCode = :storeCode', { storeCode })
       .orderBy('order.createdAt', 'ASC')
       .getMany();
   }

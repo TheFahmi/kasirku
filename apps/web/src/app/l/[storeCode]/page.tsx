@@ -1,9 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { usePosStore } from '../store/usePosStore';
-import { formatRupiah } from '../utils/format';
+import { useRouter } from 'next/navigation';
+import { usePosStore } from '@/store/usePosStore';
+import { formatRupiah } from '@/utils/format';
 
-export default function CustomerPortal() {
+export default function CustomerPortal({ params }: { params: { storeCode: string } }) {
+  const router = useRouter();
   const { customers, transactions, fetchCustomers, fetchTransactions } = usePosStore();
   const [phone, setPhone] = useState('');
   const [searched, setSearched] = useState(false);
@@ -12,9 +14,9 @@ export default function CustomerPortal() {
   const [pickupAddress, setPickupAddress] = useState('');
 
   useEffect(() => {
-    fetchCustomers();
-    fetchTransactions();
-  }, [fetchCustomers, fetchTransactions]);
+    fetchCustomers(params.storeCode);
+    fetchTransactions(params.storeCode);
+  }, [fetchCustomers, fetchTransactions, params.storeCode]);
 
   const handleSearch = () => {
     if (!phone) return;
@@ -137,9 +139,11 @@ export default function CustomerPortal() {
                     </div>
                   )}
                   <button 
-                    onClick={() => window.location.href = '/laundry/dashboard'}
+                    onClick={() => window.location.href = `/l/${params.storeCode}/dashboard`}
                     className="w-full bg-surface-2 text-accent border border-border font-bold py-2.5 rounded-xl hover:bg-border transition-colors mt-2"
                   >
+                    Buka Dashboard Lengkap &rarr;
+                  </button>
                     Buka Dashboard Lengkap &rarr;
                   </button>
                 </div>

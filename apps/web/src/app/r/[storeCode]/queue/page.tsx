@@ -1,12 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-export default function QueueDisplay() {
+export default function QueueDisplay({ params }: { params: { storeCode: string } }) {
   const [orders, setOrders] = useState<any[]>([]);
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch('http://localhost:3005/orders/queue/public');
+      const res = await fetch(`http://localhost:3005/orders/queue/public?storeCode=${params.storeCode}`);
       if (res.ok) setOrders(await res.json());
     } catch (e) {
       console.error('Failed to fetch queue orders', e);

@@ -10,8 +10,8 @@ export class ProductsService {
     private productsRepository: Repository<Product>,
   ) {}
 
-  findAll(): Promise<Product[]> {
-    return this.productsRepository.find();
+  findAll(storeCode: string = 'kasirku-main'): Promise<Product[]> {
+    return this.productsRepository.find({ where: { storeCode } });
   }
 
   findOne(id: string): Promise<Product | null> {

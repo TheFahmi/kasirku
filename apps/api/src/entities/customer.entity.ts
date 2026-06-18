@@ -14,6 +14,9 @@ export class Customer {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   quota: number;
 
+  @Column({ default: 'kasirku-main' })
+  storeCode: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

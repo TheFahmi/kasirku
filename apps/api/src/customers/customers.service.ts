@@ -10,8 +10,8 @@ export class CustomersService {
     private customersRepository: Repository<Customer>,
   ) {}
 
-  findAll(): Promise<Customer[]> {
-    return this.customersRepository.find();
+  findAll(storeCode: string = 'kasirku-main'): Promise<Customer[]> {
+    return this.customersRepository.find({ where: { storeCode } });
   }
 
   findOne(id: string): Promise<Customer | null> {

@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-export default function KitchenDashboard() {
+export default function KitchenDashboard({ params }: { params: { storeCode: string } }) {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch('http://localhost:3005/orders/kitchen');
+      const res = await fetch(`http://localhost:3005/orders/kitchen?storeCode=${params.storeCode}`);
       if (res.ok) setOrders(await res.json());
     } catch (e) {
       console.error('Failed to fetch kitchen orders', e);

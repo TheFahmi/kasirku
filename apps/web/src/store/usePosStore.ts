@@ -34,10 +34,10 @@ interface PosState {
   cartSubtotal: () => number;
   cartTotal: () => number;
 
-  fetchProducts: () => Promise<void>;
-  fetchCustomers: () => Promise<void>;
-  fetchTransactions: () => Promise<void>;
-  submitOrder: (paymentMethod: string, amountPaid: number) => Promise<boolean>;
+  fetchProducts: (storeCode?: string) => Promise<void>;
+  fetchCustomers: (storeCode?: string) => Promise<void>;
+  fetchTransactions: (storeCode?: string) => Promise<void>;
+  submitOrder: (paymentMethod: string, amountPaid: number, storeCode?: string) => Promise<boolean>;
 }
 
 export const usePosStore = create<PosState>()(
@@ -50,34 +50,34 @@ export const usePosStore = create<PosState>()(
       transactions: [],
       discount: { type: 'Rp', value: 0 },
 
-      fetchProducts: async () => {
+      fetchProducts: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch('http://localhost:3005/products');
+          const res = await fetch(`http://localhost:3005/products?storeCode=${storeCode}`);
           if (res.ok) set({ products: await res.json() });
         } catch (e) {
-          console.error('Failed to fetch products', e);
+          console.error(e);
         }
       },
       
-      fetchCustomers: async () => {
+      fetchCustomers: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch('http://localhost:3005/customers');
+          const res = await fetch(`http://localhost:3005/customers?storeCode=${storeCode}`);
           if (res.ok) set({ customers: await res.json() });
         } catch (e) {
-          console.error('Failed to fetch customers', e);
+          console.error(e);
         }
       },
       
-      fetchTransactions: async () => {
+      fetchTransactions: async (storeCode = 'kasirku-main') => {
         try {
-          const res = await fetch('http://localhost:3005/transactions');
+          const res = await fetch(`http://localhost:3005/transactions?storeCode=${storeCode}`);
           if (res.ok) set({ transactions: await res.json() });
         } catch (e) {
-          console.error('Failed to fetch transactions', e);
+          console.error(e);
         }
       },
 
-      submitOrder: async (paymentMethod, amountPaid) => {
+      submitOrder: async (paymentMethod, amountPaid, storeCode = 'kasirku-main') => {
         try {
           const state = get();
           if (state.cart.length === 0) return false;
@@ -90,6 +90,7 @@ export const usePosStore = create<PosState>()(
             paymentMethod,
             amountPaid,
             change: amountPaid - total,
+            storeCode,
             createdAt: new Date().toISOString()
           };
 

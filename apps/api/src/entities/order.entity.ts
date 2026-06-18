@@ -38,6 +38,9 @@ export class Order {
   @Column()
   customerId: string;
 
+  @Column({ default: 'kasirku-main' })
+  storeCode: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }
