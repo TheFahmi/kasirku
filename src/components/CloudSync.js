@@ -5,9 +5,36 @@ import { UX } from '../utils/ux.js';
 import { closeModal } from '../utils/modal.js';
 
 // Configuration
-// If hosted locally, the server is usually on port 3000 of the same host.
-// You can change this to your hosted server URL.
 const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/sync' : 'http://localhost:3000/api/sync';
+
+let syncTimeout = null;
+
+function scheduleBackgroundPush() {
+    const isAuto = localStorage.getItem('kasirku.sync.auto') === 'true';
+    if (!isAuto) return;
+
+    const storeId = localStorage.getItem('kasirku.sync.storeid');
+    const password = localStorage.getItem('kasirku.sync.password');
+    if (!storeId || !password) return;
+
+    if (syncTimeout) clearTimeout(syncTimeout);
+    syncTimeout = setTimeout(async () => {
+        try {
+            const bundle = { state: AppState.state, storeInfo: AppState.storeInfo };
+            const jsonStr = JSON.stringify(bundle);
+            const encryptedBlob = await Crypto.encryptBackup(jsonStr, password);
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ storeId, blob: encryptedBlob })
+            });
+            console.log('[CloudSync] Auto push success');
+        } catch (e) {
+            console.error('[CloudSync] Auto push failed:', e);
+        }
+    }, 5000); // 5 seconds debounce
+}
 
 async function handlePush() {
     const storeId = document.getElementById('syncMyStoreId').value.trim();
@@ -117,5 +144,46 @@ export const CloudSync = {
         
         const input = document.getElementById('syncMyStoreId');
         if (input) input.value = savedId;
+
+        // Auto Upload Logic
+        const autoCheckbox = document.getElementById('syncAutoUpload');
+        const passInput = document.getElementById('syncPassword');
+
+        const isAuto = localStorage.getItem('kasirku.sync.auto') === 'true';
+        autoCheckbox.checked = isAuto;
+        if (isAuto) {
+            passInput.value = localStorage.getItem('kasirku.sync.password') || '';
+        }
+
+        autoCheckbox.addEventListener('change', e => {
+            if (e.target.checked) {
+                if (!passInput.value) {
+                    e.target.checked = false;
+                    UX.toast('Silakan isi Password Enkripsi terlebih dahulu');
+                    return passInput.focus();
+                }
+                localStorage.setItem('kasirku.sync.auto', 'true');
+                localStorage.setItem('kasirku.sync.password', passInput.value);
+                UX.toast('Auto Upload diaktifkan');
+                scheduleBackgroundPush();
+            } else {
+                localStorage.removeItem('kasirku.sync.auto');
+                localStorage.removeItem('kasirku.sync.password');
+                UX.toast('Auto Upload dinonaktifkan');
+            }
+        });
+
+        passInput.addEventListener('change', e => {
+            if (autoCheckbox.checked) {
+                localStorage.setItem('kasirku.sync.password', e.target.value);
+            }
+        });
+
+        // Hook into app events
+        Events.on('products:updated', scheduleBackgroundPush);
+        Events.on('tx:updated', scheduleBackgroundPush);
+        Events.on('shift:updated', scheduleBackgroundPush);
+        Events.on('expense:updated', scheduleBackgroundPush);
+        Events.on('store:updated', scheduleBackgroundPush);
     }
 };

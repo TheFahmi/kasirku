@@ -479,6 +479,13 @@
                     Kosongkan jika hanya ingin mengunggah (Push).
                 </div>
                 <label class="field"><span class="field__label">Password Enkripsi</span><input type="password" id="syncPassword" class="field__input" placeholder="Wajib untuk push / pull" required autocomplete="current-password" /></label>
+                <label class="field" style="display:flex;align-items:center;gap:12px;cursor:pointer;margin-top:16px;background:var(--surface);padding:12px;border-radius:var(--r-md)">
+                    <input type="checkbox" id="syncAutoUpload" style="width:20px;height:20px;accent-color:var(--primary)" />
+                    <div>
+                        <span style="font-size:14px;font-weight:600;display:block">Auto Upload</span>
+                        <span style="font-size:12px;color:var(--muted)">Otomatis simpan (Push) tiap ada perubahan data. Password akan disimpan di perangkat ini.</span>
+                    </div>
+                </label>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
                     <button type="button" class="btn btn--outline" id="syncPullBtn">Tarik Data (Pull)</button>
                     <button type="button" class="btn btn--primary" id="syncPushBtn">Unggah (Push)</button>
