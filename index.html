@@ -86,7 +86,15 @@
 
     <!-- ===== Main ===== -->
     <main class="app-main">
-        <section class="view view--active" id="view-pos">
+        <section class="view view--active" id="view-pos" style="position:relative">
+            <div id="shiftBlocker" style="position:absolute;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;border-radius:inherit" hidden>
+                <div id="shiftBlockerIcon" style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.1);color:var(--danger);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+                    <svg class="ico" viewBox="0 0 24 24" style="width:32px;height:32px;stroke-width:2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <h2 style="font-size:20px;font-weight:700;margin-bottom:8px" id="shiftBlockerTitle">Shift Belum Dibuka</h2>
+                <p style="color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.5;max-width:300px" id="shiftBlockerDesc">Anda harus membuka shift kasir terlebih dahulu sebelum dapat melakukan transaksi penjualan hari ini.</p>
+                <button class="btn btn--primary btn--lg" style="padding:0 32px" onclick="document.getElementById('shiftBtn').click()" id="shiftBlockerBtn">Buka Shift Sekarang</button>
+            </div>
             <div class="search">
                 <svg class="ico ico--sm search__ico" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" />
@@ -95,7 +103,6 @@
             </div>
             <div class="chips" id="categoryChips"></div>
             <div id="stockAlertBanner"></div>
-            <div id="shiftAlertBanner"></div>
             <div class="product-grid" id="productGrid"></div>
         </section>
 

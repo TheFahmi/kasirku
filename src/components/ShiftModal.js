@@ -112,8 +112,8 @@ export const ShiftModal = {
 };
 
 export function checkShiftReminder() {
-    const banner = document.getElementById('shiftAlertBanner');
-    if (!banner) return;
+    const blocker = document.getElementById('shiftBlocker');
+    if (!blocker) return;
     
     const active = AppState.getActiveShift();
     
@@ -133,36 +133,31 @@ export function checkShiftReminder() {
             AppState.persist();
             
             UX.toast('Shift kemarin telah ditutup otomatis');
-            banner.innerHTML = `
-                <div style="background:var(--danger);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r-md);margin-bottom:16px;box-shadow:0 4px 12px rgba(239,68,68,0.2)">
-                    <span style="flex:1">⚠️ Shift kemarin ditutup otomatis. Buka Shift baru untuk hari ini.</span>
-                    <button class="btn btn--sm" style="background:#fff;color:var(--danger);padding:6px 12px;font-weight:700" onclick="document.getElementById('shiftBtn').click()">Buka Shift</button>
-                </div>
-            `;
+            Events.emit('shift:updated'); // Re-trigger checkShiftReminder
             return;
         }
     }
     
     if (!active) {
-        banner.innerHTML = `
-            <div style="background:var(--danger);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r-md);margin-bottom:16px;box-shadow:0 4px 12px rgba(239,68,68,0.2)">
-                <span style="flex:1">⚠️ Anda belum membuka Shift hari ini.</span>
-                <button class="btn btn--sm" style="background:#fff;color:var(--danger);padding:6px 12px;font-weight:700" onclick="document.getElementById('shiftBtn').click()">Buka Shift</button>
-            </div>
-        `;
+        document.getElementById('shiftBlockerIcon').style.background = 'rgba(239,68,68,0.1)';
+        document.getElementById('shiftBlockerIcon').style.color = 'var(--danger)';
+        document.getElementById('shiftBlockerTitle').textContent = 'Shift Belum Dibuka';
+        document.getElementById('shiftBlockerDesc').textContent = 'Anda harus membuka shift kasir terlebih dahulu sebelum dapat melakukan transaksi penjualan hari ini.';
+        document.getElementById('shiftBlockerBtn').textContent = 'Buka Shift Sekarang';
+        blocker.hidden = false;
         return;
     }
     
     const hours = (Date.now() - active.startTime) / (1000 * 60 * 60);
     if (hours > 12) {
-        banner.innerHTML = `
-            <div style="background:var(--warning);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r-md);margin-bottom:16px;box-shadow:0 4px 12px rgba(245,158,11,0.2)">
-                <span style="flex:1">⏰ Shift sudah berjalan > 12 jam.</span>
-                <button class="btn btn--sm" style="background:#fff;color:var(--warning);padding:6px 12px;font-weight:700" onclick="document.getElementById('shiftBtn').click()">Tutup Shift</button>
-            </div>
-        `;
+        document.getElementById('shiftBlockerIcon').style.background = 'rgba(245,158,11,0.1)';
+        document.getElementById('shiftBlockerIcon').style.color = 'var(--warning)';
+        document.getElementById('shiftBlockerTitle').textContent = 'Shift Berjalan Terlalu Lama';
+        document.getElementById('shiftBlockerDesc').textContent = 'Shift saat ini sudah berjalan lebih dari 12 jam. Jangan lupa untuk menutup shift sebelum pulang.';
+        document.getElementById('shiftBlockerBtn').textContent = 'Tutup Shift Sekarang';
+        blocker.hidden = false;
         return;
     }
     
-    banner.innerHTML = '';
+    blocker.hidden = true;
 }
