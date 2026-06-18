@@ -68,7 +68,7 @@ function render() {
     </div>
     <div class="qty">
         <button class="qty__btn" data-dec="${i.cartKey || i.id}">−</button>
-        <span class="qty__num">${i.qty}</span>
+        <span class="qty__num" data-editqty="${i.cartKey || i.id}" style="cursor:pointer; text-decoration:underline dashed var(--border);">${i.qty}</span>
         <button class="qty__btn" data-inc="${i.cartKey || i.id}">+</button>
     </div>
 </div>`
@@ -92,8 +92,29 @@ export const CartSheet = {
         document.getElementById('cartItems').addEventListener('click', e => {
             const inc = e.target.closest('[data-inc]');
             const dec = e.target.closest('[data-dec]');
+            const edit = e.target.closest('[data-editqty]');
             if (inc) changeQty(inc.dataset.inc, 1);
             if (dec) changeQty(dec.dataset.dec, -1);
+            if (edit) {
+                const key = edit.dataset.editqty;
+                const it = AppState.state.cart.find(x => (x.cartKey || x.id) === key);
+                if (!it) return;
+                const val = prompt(`Masukkan kuantitas (contoh: 2.5 atau 100) untuk ${it.name}:`, it.qty);
+                if (val !== null) {
+                    const num = parseFloat(val);
+                    if (!isNaN(num) && num > 0) {
+                        const p = AppState.state.products.find(x => x.id === it.id);
+                        if (p && num > p.stock) return UX.toast('Stok tidak mencukupi');
+                        it.qty = num;
+                    } else if (num === 0) {
+                        AppState.state.cart = AppState.state.cart.filter(x => (x.cartKey || x.id) !== key);
+                    }
+                    AppState.persist();
+                    Events.emit('cart:updated');
+                    render();
+                    if (ProductGrid) ProductGrid.syncCardBadge(it.id);
+                }
+            }
         });
         document.getElementById('discountInput').addEventListener('input', e => {
             AppState.state.discount.value = Math.max(0, parseFloat(e.target.value) || 0);
