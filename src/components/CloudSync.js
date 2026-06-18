@@ -5,7 +5,7 @@ import { UX } from '../utils/ux.js';
 import { closeModal } from '../utils/modal.js';
 
 // Configuration
-const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/sync' : 'http://localhost:3000/api/sync';
+const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3000/api/sync' : 'http://localhost:3000/api/sync');
 
 let syncTimeout = null;
 
