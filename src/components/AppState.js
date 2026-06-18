@@ -39,6 +39,8 @@ export const state = {
     customers: Storage.load(Storage.KEY.customers, []),
     shifts: Storage.load(Storage.KEY.shifts, []),
     expenses: Storage.load(Storage.KEY.expenses, []),
+    orders: Storage.load(Storage.KEY.orders, []),
+    bizMode: Storage.load(Storage.KEY.bizmode, 'retail'),
     category: 'Semua',
     search: '',
     discount: _sd,
@@ -74,6 +76,8 @@ export const persist = () => {
     Storage.save(Storage.KEY.customers, state.customers);
     Storage.save(Storage.KEY.shifts, state.shifts);
     Storage.save(Storage.KEY.expenses, state.expenses);
+    Storage.save(Storage.KEY.orders, state.orders);
+    Storage.save(Storage.KEY.bizmode, state.bizMode);
 };
 
 export const persistStore = () => Storage.save(Storage.KEY.store, storeInfo);

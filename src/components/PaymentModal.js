@@ -11,6 +11,7 @@ const BUILTIN_METHODS = [
     { id: 'qris',  label: 'QRIS',        type: 'noncash', builtin: true },
     { id: 'debit', label: 'Kartu Debit', type: 'noncash', builtin: true },
     { id: 'debt',  label: 'Kasbon / Piutang', type: 'debt', builtin: true },
+    { id: 'pending', label: 'Belum Lunas (Bayar Nanti)', type: 'debt', builtin: true },
 ];
 let customMethods = Storage.load(Storage.KEY.methods, []);
 const getPayMethods = () => [...BUILTIN_METHODS, ...customMethods];
@@ -117,7 +118,7 @@ function completeTx() {
         cash   = parseFloat(document.getElementById('cashInput').value) || 0;
         if (cash < total) return UX.toast('Uang tidak cukup');
         change = cash - total;
-    } else if (_payMethod === 'debt') {
+    } else if (_payMethod === 'debt' || _payMethod === 'pending') {
         cash = 0; change = 0;
     } else {
         cash = total; change = 0;
@@ -143,6 +144,41 @@ function completeTx() {
         const p = AppState.state.products.find(x => x.id === i.id);
         if (p) p.stock = Math.max(0, p.stock - i.qty);
     });
+
+    // Add to Queue if not Retail
+    if (AppState.state.bizMode !== 'retail') {
+        const custName = document.getElementById('payCustomerName').value.trim();
+        const prioEl = document.getElementById('payPrioritySelect');
+        const priority = prioEl ? prioEl.value : 'normal';
+        
+        let wa = '', delivery = '', dueDate = '';
+        if (AppState.state.bizMode === 'service') {
+            const waEl = document.getElementById('payCustomerWa');
+            const delEl = document.getElementById('payDeliveryType');
+            const dueEl = document.getElementById('payDueDate');
+            if (waEl) wa = waEl.value.trim();
+            if (delEl) delivery = delEl.value;
+            if (dueEl) dueDate = dueEl.value;
+        }
+
+        AppState.state.orders.push({
+            id: tx.id,
+            no: tx.no,
+            timestamp: new Date().getTime(),
+            customerName: custName,
+            wa: wa,
+            delivery: delivery,
+            dueDate: dueDate,
+            priority: priority,
+            status: AppState.state.bizMode === 'service' ? 'BARU' : 'DAPUR',
+            items: tx.items.map(i => ({ name: i.name, qty: i.qty })),
+            total: tx.total,
+            method: tx.method,
+            isPaid: _payMethod !== 'debt' && _payMethod !== 'pending'
+        });
+        Events.emit('orders:updated');
+    }
+
     AppState.state.transactions.unshift(tx);
     AppState.persist();
     Events.emit('receipt:show', tx);
@@ -151,6 +187,9 @@ function completeTx() {
     document.getElementById('discountInput').value = 0;
     document.getElementById('discountType').value  = 'Rp';
     document.getElementById('orderNote').value      = '';
+    document.getElementById('payCustomerName').value = '';
+    const prioSel = document.getElementById('payPrioritySelect');
+    if (prioSel) prioSel.value = 'normal';
     Events.emit('products:updated');
     Events.emit('cart:updated');
     Events.emit('history:updated');

@@ -13,6 +13,8 @@ const KEY = {
     customers:'kasirku.customers.v1',
     shifts:   'kasirku.shifts.v1',
     expenses: 'kasirku.expenses.v1',
+    orders:   'kasirku.orders.v1',
+    bizmode:  'kasirku.bizmode.v1',
 };
 const load = (key, fallback) => {
     try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; }

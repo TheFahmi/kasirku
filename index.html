@@ -144,6 +144,10 @@
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg><span>Pelanggan</span>
         </button>
+        <button class="tab" data-view="queue">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Dapur</span>
+        </button>
         <button class="tab" data-view="history">
             <svg class="ico" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" />
@@ -242,8 +246,16 @@
                             </div>
                         </div>
                         
-                        <p class="setting-header">Tampilan</p>
+                        <p class="setting-header">Tampilan & Mode Bisnis</p>
                         <div class="setting-group">
+                            <label class="setting-item" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:12px;padding-bottom:12px">
+                                <span class="setting-item__text">Tipe Bisnis<small>Pilih mode yang sesuai dengan toko Anda</small></span>
+                                <select id="bizModeSelect" class="field__input" style="width:100%;margin-top:4px">
+                                    <option value="retail">Toko Kelontong / Ritel (Bawa Pulang)</option>
+                                    <option value="fb">Restoran / Warung (Mode Dapur & Meja)</option>
+                                    <option value="service">Laundry / Jasa (Mode Servis & Bayar Nanti)</option>
+                                </select>
+                            </label>
                             <button class="setting-item" id="darkModeBtn">
                                 <span class="setting-item__ico">
                                     <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
@@ -411,6 +423,16 @@
         </div>
     </div>
 
+      <!-- ===== Queue/Kitchen View ===== -->
+      <div class="view" id="view-queue" hidden>
+          <div class="topbar">
+              <div class="topbar__title">Antrean Dapur</div>
+          </div>
+          <div style="padding:16px" id="queueList">
+              <!-- Kitchen queue items will be rendered here -->
+          </div>
+      </div>
+
     <!-- ===== Store Modal ===== -->
     <div class="modal" id="storeModal" hidden>
         <div class="modal__scrim" data-close="storeModal"></div>
@@ -538,9 +560,46 @@
     <div class="modal" id="paymentModal" hidden>
         <div class="modal__scrim" data-close="paymentModal"></div>
         <div class="modal__panel">
-            <div class="modal__head">
+            <div class="modal__head" style="margin-bottom:16px">
                 <h2>Pembayaran</h2><button class="iconbtn" data-close="paymentModal">✕</button>
             </div>
+            <div id="paymentOptionsExtra">
+                <label class="field"><span class="field__label" id="payCustomerLabel">Nama Pelanggan / Catatan</span><input type="text" id="payCustomerName" class="field__input" placeholder="Opsional" style="text-transform:uppercase" /></label>
+                
+                <div id="laundryFields" style="display:none;background:var(--surface);padding:12px;border-radius:var(--r-md);margin-bottom:12px;border:1px solid var(--border)">
+                    <label class="field"><span class="field__label">No. WhatsApp Pelanggan</span>
+                        <input type="tel" id="payCustomerWa" class="field__input" placeholder="Contoh: 0812345678" />
+                    </label>
+                    <div style="display:flex;gap:12px">
+                        <label class="field" style="flex:1"><span class="field__label">Pengiriman</span>
+                            <select id="payDeliveryType" class="field__input">
+                                <option value="Ambil Sendiri">Ambil Sendiri</option>
+                                <option value="Diantar/Kurir">Diantar / Kurir</option>
+                            </select>
+                        </label>
+                        <label class="field" style="flex:1"><span class="field__label">Selesai</span>
+                            <select id="payDueDate" class="field__input">
+                                <option value="Hari Ini">Hari Ini</option>
+                                <option value="Besok">Besok</option>
+                                <option value="Lusa">Lusa</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <label class="field" id="priorityField"><span class="field__label">Prioritas Antrean</span>
+                    <select id="payPrioritySelect" class="field__input">
+                        <option value="normal">Normal</option>
+                        <option value="high">Kilat / Cito (Prioritas Tinggi)</option>
+                    </select>
+                </label>
+            </div>
+            <label class="field"><span class="field__label">Metode Pembayaran</span>
+                <select id="payMethodSelect" class="field__input">
+                    <option value="Tunai">Tunai</option>
+                    <option value="Belum Lunas">Belum Lunas (Bayar Nanti)</option>
+                </select>
+            </label>
             <div class="paybox paybox--total" style="margin-bottom:12px"><span>Total belanja</span><strong id="paymentTotal">Rp 0</strong></div>
             <label class="field" style="margin-bottom:12px">
                 <span class="field__label">Pelanggan (opsional)</span>
