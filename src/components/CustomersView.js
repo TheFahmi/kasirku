@@ -4,6 +4,7 @@ import { esc, formatRupiah, uid } from '../utils/format.js';
 import { tile, emptyState } from '../utils/swatch.js';
 import { ConfirmDialog } from './ConfirmDialog.js';
 import { UX } from '../utils/ux.js';
+import { openModal, closeModal } from '../utils/modal.js';
 
 function render() {
     const list = document.getElementById('customersList');
@@ -36,20 +37,21 @@ function render() {
         }).join('');
     }
     
-    html += `<button class="btn btn--primary btn--lg" style="position:fixed;bottom:90px;right:20px;border-radius:50%;width:56px;height:56px;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:0;z-index:100;font-size:32px;display:flex;align-items:center;justify-content:center" id="addCustomerFab">+</button>`;
+    html += `<div style="position:fixed;bottom:calc(var(--nav-h) + 16px);left:16px;right:16px;z-index:90;max-width:800px;margin:0 auto">
+        <button class="btn btn--primary btn--block btn--lg" id="addCustomerBtn" style="box-shadow:0 4px 12px rgba(0,0,0,0.2)">+ Tambah Pelanggan</button>
+    </div>`;
     
     list.innerHTML = html;
 }
 
-function promptAddCustomer() {
-    const name = prompt('Nama Pelanggan Baru:');
-    if (!name || !name.trim()) return;
-    const phone = prompt('Nomor Telepon (opsional):') || '';
-    const id = uid();
-    AppState.state.customers.push({ id, name: name.trim(), phone: phone.trim(), createdAt: Date.now() });
-    AppState.persist();
-    UX.toast('Pelanggan ditambahkan');
-    render();
+function openCustomerModal(id) {
+    const c = id ? AppState.state.customers.find(x => x.id === id) : null;
+    document.getElementById('customerModalTitle').textContent = c ? 'Edit Pelanggan' : 'Tambah Pelanggan';
+    document.getElementById('customerId').value = c ? c.id : '';
+    document.getElementById('customerName').value = c ? c.name : '';
+    document.getElementById('customerPhone').value = c ? c.phone : '';
+    document.getElementById('deleteCustomerBtn').hidden = !c;
+    openModal('customerModal');
 }
 
 export const CustomersView = {
@@ -59,10 +61,40 @@ export const CustomersView = {
             if (e.view === 'customers') render();
         });
         
+        document.getElementById('customerForm').addEventListener('submit', e => {
+            const id = document.getElementById('customerId').value;
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            if (!name) return;
+            
+            if (id) {
+                const c = AppState.state.customers.find(x => x.id === id);
+                if (c) { c.name = name; c.phone = phone; }
+                UX.toast('Pelanggan diperbarui');
+            } else {
+                AppState.state.customers.push({ id: uid(), name, phone, createdAt: Date.now() });
+                UX.toast('Pelanggan ditambahkan');
+            }
+            AppState.persist();
+            closeModal('customerModal');
+            render();
+            // Juga perlu re-render payment modal dropdown kalau terbuka, tapi biarkan saja karna re-mount saat open
+        });
+        
+        document.getElementById('deleteCustomerBtn').addEventListener('click', () => {
+            const id = document.getElementById('customerId').value;
+            ConfirmDialog.show('Hapus pelanggan ini?', 'Hapus').then(ok => {
+                if (!ok) return;
+                AppState.state.customers = AppState.state.customers.filter(x => x.id !== id);
+                AppState.persist();
+                closeModal('customerModal');
+                render();
+            });
+        });
+        
         document.getElementById('customersList').addEventListener('click', e => {
-            const fab = e.target.closest('#addCustomerFab');
-            if (fab) {
-                promptAddCustomer();
+            if (e.target.closest('#addCustomerBtn')) {
+                openCustomerModal();
                 return;
             }
             
@@ -74,13 +106,18 @@ export const CustomersView = {
             
             const unpaid = AppState.state.transactions.filter(t => t.customerId === cid && t.isDebt);
             if (!unpaid.length) {
-                UX.toast('Tidak ada tagihan tertunggak untuk ' + c.name);
+                // Edit profile if no debt
+                openCustomerModal(cid);
                 return;
             }
             
             const total = unpaid.reduce((s, t) => s + t.total, 0);
-            ConfirmDialog.show(`Lunasi semua tagihan kasbon ${c.name} sejumlah ${formatRupiah(total)}?`, 'Lunasi').then(ok => {
-                if (!ok) return;
+            ConfirmDialog.show(`Tagihan kasbon ${c.name} sejumlah ${formatRupiah(total)}\nApakah Anda ingin melunasinya atau edit profil pelanggan?`, 'Lunasi Kasbon').then(ok => {
+                if (!ok) {
+                    // if cancel, open edit
+                    openCustomerModal(cid);
+                    return;
+                }
                 unpaid.forEach(t => {
                     t.isDebt = false;
                     t.debtPaidAt = Date.now();
