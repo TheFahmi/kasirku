@@ -1940,44 +1940,54 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 1024px) {
     body {
         background: var(--surface-2);
+        overflow: hidden;
     }
     .app-layout {
-        display: grid;
+        display: grid !important;
         grid-template-columns: 240px 1fr 360px;
         grid-template-rows: auto 1fr;
-        grid-template-areas: 
-            "sidebar topbar cart"
-            "sidebar main   cart";
+        width: 100vw;
         height: 100vh;
-        max-width: 1600px;
-        margin: 0 auto;
+        max-width: 100%;
+        margin: 0;
         background: var(--bg);
-        box-shadow: var(--shadow);
+        overflow: hidden;
     }
 
     .topbar {
-        grid-area: topbar;
-        position: static;
+        grid-column: 2;
+        grid-row: 1;
+        position: static !important;
         border-bottom: 1px solid var(--border);
+        width: 100%;
     }
 
     .app-main {
-        grid-area: main;
+        grid-column: 2;
+        grid-row: 2;
         overflow-y: auto;
-        position: relative;
+        position: relative !important;
+        padding-top: 16px !important; /* override mobile padding */
+        min-width: 0;
+        height: 100%;
     }
     
     .tabbar {
-        grid-area: sidebar;
-        position: static;
-        flex-direction: column;
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
         align-items: flex-start;
-        height: 100vh;
-        padding: 24px 16px;
-        background: var(--surface);
-        border-top: none;
-        border-right: 1px solid var(--border);
+        height: 100vh !important;
+        padding: 24px 16px !important;
+        background: var(--surface) !important;
+        border-top: none !important;
+        border-right: 1px solid var(--border) !important;
         gap: 8px;
+        inset: auto !important;
+        transform: none !important;
+        z-index: 10;
     }
 
     .tabbar .tab {
@@ -2003,13 +2013,15 @@ h1, h2, h3, h4, h5, h6 {
 
     /* Cart Sheet as Side Panel */
     #cartSheet {
-        grid-area: cart;
+        grid-column: 3;
+        grid-row: 1 / span 2;
         position: static !important;
         display: flex !important;
         transform: none !important;
-        background: transparent;
+        background: var(--surface) !important;
         z-index: 10;
         border-left: 1px solid var(--border);
+        inset: auto !important;
     }
     
     #cartSheet .sheet__scrim {
@@ -2017,15 +2029,17 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     #cartSheet .sheet__panel {
-        max-width: 100%;
-        height: 100%;
-        border-radius: 0;
-        box-shadow: none;
-        padding-bottom: 24px;
+        position: static !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding-bottom: 24px !important;
         transform: none !important;
         animation: none !important;
-        display: flex;
-        flex-direction: column;
+        display: flex !important;
+        flex-direction: column !important;
+        inset: auto !important;
     }
     
     #cartSheet .sheet__grip,
@@ -2035,7 +2049,7 @@ h1, h2, h3, h4, h5, h6 {
 
     /* Fix product grid width */
     .product-grid {
-        padding-bottom: 24px;
+        padding-bottom: 24px !important;
     }
     .cartbar {
         display: none !important;

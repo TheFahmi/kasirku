@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kasirku-v2-cache-3';
+const CACHE_NAME = 'kasirku-v2-cache-4';
 
 self.addEventListener('install', (e) => {
     e.waitUntil(
