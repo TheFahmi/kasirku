@@ -10,10 +10,10 @@ import { closeModal } from '../utils/modal.js';
 const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/sync' : 'http://localhost:3000/api/sync';
 
 async function handlePush() {
-    const storeId = document.getElementById('syncStoreId').value.trim();
+    const storeId = document.getElementById('syncMyStoreId').value.trim();
     const password = document.getElementById('syncPassword').value;
 
-    if (!storeId || !password) return UX.toast('Store ID dan Password wajib diisi');
+    if (!storeId || !password) return UX.toast('Password wajib diisi');
 
     try {
         const btn = document.getElementById('syncPushBtn');
@@ -52,10 +52,11 @@ async function handlePush() {
 }
 
 async function handlePull() {
-    const storeId = document.getElementById('syncStoreId').value.trim();
+    const storeId = document.getElementById('syncTargetStoreId').value.trim();
     const password = document.getElementById('syncPassword').value;
 
-    if (!storeId || !password) return UX.toast('Store ID dan Password wajib diisi');
+    if (!storeId) return UX.toast('Silakan ketik ID Perangkat Lain yang ingin ditarik');
+    if (!password) return UX.toast('Password wajib diisi');
 
     if (!confirm('Peringatan: Menarik data akan menimpa data yang ada di HP ini. Lanjutkan?')) return;
 
@@ -114,12 +115,7 @@ export const CloudSync = {
             localStorage.setItem('kasirku.sync.storeid', savedId);
         }
         
-        const input = document.getElementById('syncStoreId');
+        const input = document.getElementById('syncMyStoreId');
         if (input) input.value = savedId;
-
-        // Save storeId on change
-        document.getElementById('syncStoreId').addEventListener('change', e => {
-            localStorage.setItem('kasirku.sync.storeid', e.target.value.trim());
-        });
     }
 };
