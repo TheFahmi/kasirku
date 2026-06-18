@@ -13,11 +13,14 @@ function render() {
     
     // 1. Data for Selected Date
     const txs = AppState.state.transactions.filter(tx => tx.date.startsWith(date));
+    const exps = AppState.state.expenses.filter(ex => ex.date.startsWith(date));
+    
     const totalRev = txs.reduce((s, tx) => s + tx.total, 0);
     const totalTx = txs.length;
     const totalItems = txs.reduce((s, tx) => s + tx.items.reduce((sum, i) => sum + i.qty, 0), 0);
     const totalCost = txs.reduce((s, tx) => s + tx.items.reduce((sum, i) => sum + ((i.cost || 0) * i.qty), 0), 0);
-    const profit = totalRev - totalCost;
+    const totalExpense = exps.reduce((s, ex) => s + ex.amount, 0);
+    const profit = totalRev - totalCost - totalExpense;
     
     // 2. Payment Methods Donut Chart
     let methodsHTML = '';
@@ -110,19 +113,27 @@ function render() {
                 <input type="date" id="reportDate" value="${date}" class="field__input" style="width:auto;margin:0;padding:6px 12px" />
             </div>
             
+            <button class="btn btn--primary btn--block" style="margin-bottom:16px" onclick="document.getElementById('expenseModal').hidden=false">
+                <svg class="ico" viewBox="0 0 24 24" style="margin-right:6px"><path d="M12 4v16m8-8H4"/></svg> Catat Pengeluaran
+            </button>
+            
             <div class="statcard" style="margin-bottom:12px">
                 <div class="statcard__label">Pendapatan Kotor (Omset)</div>
                 <div class="statcard__value" style="color:var(--ink)">${formatRupiah(totalRev)}</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
                 <div class="statcard">
-                    <div class="statcard__label">Total Modal</div>
+                    <div class="statcard__label">Total Modal Barang</div>
                     <div class="statcard__value" style="color:var(--danger)">${formatRupiah(totalCost)}</div>
                 </div>
                 <div class="statcard">
-                    <div class="statcard__label">Laba Bersih</div>
-                    <div class="statcard__value" style="color:var(--success)">${formatRupiah(profit)}</div>
+                    <div class="statcard__label">Pengeluaran Lainnya</div>
+                    <div class="statcard__value" style="color:var(--danger)">${formatRupiah(totalExpense)}</div>
                 </div>
+            </div>
+            <div class="statcard" style="margin-bottom:12px;background:var(--success-soft);border:none">
+                <div class="statcard__label" style="color:var(--success)">Laba Bersih</div>
+                <div class="statcard__value" style="color:var(--success)">${formatRupiah(profit)}</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
                 <div class="statcard">
@@ -164,6 +175,7 @@ function render() {
 export const ReportsView = {
     mount() {
         Events.on('reports:updated', render);
+        Events.on('expense:updated', render);
         render();
     },
     render

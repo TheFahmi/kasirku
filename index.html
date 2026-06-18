@@ -156,13 +156,13 @@
         </button>
     </nav>
 
-    <div id="shiftBlocker" style="position:fixed;top:var(--nav-h);left:0;right:0;bottom:70px;background:var(--bg);z-index:900;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center" hidden>
+    <div id="shiftBlocker" style="position:fixed;top:var(--nav-h);left:0;right:0;bottom:70px;background:var(--bg);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center" hidden>
         <div id="shiftBlockerIcon" style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.1);color:var(--danger);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
             <svg class="ico" viewBox="0 0 24 24" style="width:32px;height:32px;stroke-width:2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         </div>
         <h2 style="font-size:20px;font-weight:700;margin-bottom:8px" id="shiftBlockerTitle">Shift Belum Dibuka</h2>
         <p style="color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.5;max-width:300px" id="shiftBlockerDesc">Anda harus membuka shift kasir terlebih dahulu sebelum dapat melakukan transaksi penjualan hari ini.</p>
-        <button class="btn btn--primary btn--lg" style="padding:0 32px" onclick="document.getElementById('shiftBtn').click()" id="shiftBlockerBtn">Buka Shift Sekarang</button>
+        <button class="btn btn--primary btn--block btn--lg" style="padding:0 32px;max-width:300px;font-size:16px;height:48px;font-weight:700" onclick="document.getElementById('shiftBtn').click()" id="shiftBlockerBtn">Buka Shift Sekarang</button>
     </div>
 
     <!-- ===== Cart Sheet ===== -->
@@ -363,6 +363,33 @@
                 <label class="field"><span class="field__label">Telepon (opsional)</span><input type="tel" id="storePhone" class="field__input" placeholder="+62 ..." /></label>
                 <label class="field"><span class="field__label">Pesan di struk (opsional)</span><input type="text" id="storeFooter" class="field__input" placeholder="Contoh: Terima kasih! IG: @tokoku" /></label>
                 <button type="submit" class="btn btn--primary btn--block">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== Expense Modal ===== -->
+    <div class="modal" id="expenseModal" hidden>
+        <div class="modal__scrim" data-close="expenseModal"></div>
+        <div class="modal__panel">
+            <div class="modal__head">
+                <h2>Catat Pengeluaran</h2><button class="iconbtn" data-close="expenseModal">✕</button>
+            </div>
+            <form id="expenseForm">
+                <label class="field"><span class="field__label">Nominal (Rp)</span><input type="number" id="expenseAmount" class="field__input field__input--lg" inputmode="numeric" placeholder="Contoh: 50000" required /></label>
+                <label class="field"><span class="field__label">Kategori</span>
+                    <select id="expenseCategory" class="field__input">
+                        <option value="Bahan Baku">Bahan Baku</option>
+                        <option value="Konsumsi">Makan / Konsumsi</option>
+                        <option value="Operasional">Operasional (Listrik, dll)</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </label>
+                <label class="field"><span class="field__label">Keterangan Singkat</span><input type="text" id="expenseNote" class="field__input" placeholder="Contoh: Beli beras 5kg" required /></label>
+                <div style="background:rgba(245,158,11,0.1);color:var(--warning);padding:12px;border-radius:var(--r-md);font-size:12.5px;line-height:1.4;margin-bottom:16px">
+                    <strong style="display:block;margin-bottom:4px">⚠️ Uang Laci Terpotong</strong>
+                    Mencatat pengeluaran di sini akan otomatis mengurangi perhitungan uang laci di shift ini.
+                </div>
+                <button type="submit" class="btn btn--primary btn--block btn--lg">Simpan Pengeluaran</button>
             </form>
         </div>
     </div>

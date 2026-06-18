@@ -26,7 +26,8 @@ function render() {
         // Calculate expected cash
         const txs = AppState.state.transactions.filter(t => t.shiftId === active.id);
         const cashSales = txs.filter(t => t.method === 'cash').reduce((s, t) => s + t.total, 0);
-        const expectedCash = active.startCash + cashSales;
+        const exps = AppState.state.expenses.filter(e => e.shiftId === active.id).reduce((s, e) => s + e.amount, 0);
+        const expectedCash = active.startCash + cashSales - exps;
         
         c.innerHTML = `
             <div style="background:var(--accent-soft);color:var(--accent-ink);padding:12px;border-radius:8px;margin-bottom:16px;font-size:13px">
@@ -131,7 +132,8 @@ export function checkShiftReminder() {
         if (startDate !== today) {
             const txs = AppState.state.transactions.filter(t => t.shiftId === active.id);
             const cashSales = txs.filter(t => t.method === 'cash').reduce((s, t) => s + t.total, 0);
-            const expectedCash = active.startCash + cashSales;
+            const exps = AppState.state.expenses.filter(e => e.shiftId === active.id).reduce((s, e) => s + e.amount, 0);
+            const expectedCash = active.startCash + cashSales - exps;
             
             active.endTime = Date.now();
             active.systemCash = expectedCash;

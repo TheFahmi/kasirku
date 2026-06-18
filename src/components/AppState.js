@@ -38,6 +38,7 @@ export const state = {
     opnameHistory: Storage.load(Storage.KEY.opname, []),
     customers: Storage.load(Storage.KEY.customers, []),
     shifts: Storage.load(Storage.KEY.shifts, []),
+    expenses: Storage.load(Storage.KEY.expenses, []),
     category: 'Semua',
     search: '',
     discount: _sd,
@@ -72,6 +73,7 @@ export const persist = () => {
     Storage.save(Storage.KEY.opname, state.opnameHistory);
     Storage.save(Storage.KEY.customers, state.customers);
     Storage.save(Storage.KEY.shifts, state.shifts);
+    Storage.save(Storage.KEY.expenses, state.expenses);
 };
 
 export const persistStore = () => Storage.save(Storage.KEY.store, storeInfo);
