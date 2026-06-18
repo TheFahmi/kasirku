@@ -16,7 +16,7 @@ export function setPaymentModalRef(pm) { _PaymentModal = pm; }
 'use strict';
 
 async function backupData() {
-    const payload = { app: 'KasirKu', type: 'backup', version: 2, exportedAt: new Date().toISOString(), products: AppState.state.products, transactions: AppState.state.transactions, store: AppState.storeInfo, methods: customMethods };
+    const payload = { app: 'KasirKu', type: 'backup', version: 2, exportedAt: new Date().toISOString(), products: AppState.state.products, transactions: AppState.state.transactions, store: AppState.storeInfo, methods: customMethods, opnameHistory: AppState.state.opnameHistory };
     const acc = Auth.getAccount();
     if (!acc) return UX.toast('Anda harus login terlebih dahulu');
     try {
@@ -47,7 +47,9 @@ function restoreData(file) {
         }
         const products = sanitize(d && d.products); if (!products.length) return UX.toast('Backup tidak berisi produk valid');
         const ok = await ConfirmDialog.show('Pulihkan data dari backup? Data saat ini akan diganti.', 'Pulihkan'); if (!ok) return;
-        AppState.state.products = products; AppState.state.transactions = Array.isArray(d.transactions) ? d.transactions : [];
+        AppState.state.products = products; 
+        AppState.state.transactions = Array.isArray(d.transactions) ? d.transactions : [];
+        AppState.state.opnameHistory = Array.isArray(d.opnameHistory) ? d.opnameHistory : [];
         if (d.store) { AppState.storeInfo.name = d.store.name || AppState.storeInfo.name; AppState.storeInfo.address = d.store.address || ''; AppState.storeInfo.phone = d.store.phone || ''; AppState.persistStore(); }
         if (Array.isArray(d.methods)) {
             const newMethods = d.methods.filter(m => m.id && m.label && !BUILTIN_METHODS.find(b => b.id === m.id));

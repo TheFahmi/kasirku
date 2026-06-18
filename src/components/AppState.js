@@ -35,6 +35,7 @@ export const state = {
     products: loadProducts(),
     transactions: Storage.load(Storage.KEY.tx, []),
     cart: Storage.load(Storage.KEY.cart, []),
+    opnameHistory: Storage.load(Storage.KEY.opname, []),
     category: 'Semua',
     search: '',
     discount: _sd,
@@ -66,6 +67,7 @@ export const persist = () => {
     Storage.save(Storage.KEY.tx, state.transactions);
     Storage.save(Storage.KEY.cart, state.cart);
     Storage.save(Storage.KEY.discount, state.discount);
+    Storage.save(Storage.KEY.opname, state.opnameHistory);
 };
 
 export const persistStore = () => Storage.save(Storage.KEY.store, storeInfo);

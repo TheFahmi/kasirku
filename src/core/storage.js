@@ -9,6 +9,7 @@ const KEY = {
     discount: 'kasirku.discount.v1',
     daily:    'kasirku.daily.v1',
     theme:    'kasirku.theme',
+    opname:   'kasirku.opname.v1',
 };
 const load = (key, fallback) => {
     try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; }

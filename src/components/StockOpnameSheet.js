@@ -77,17 +77,33 @@ async function applyOpname() {
     if (!ok) return;
 
     let changes = 0;
+    const historyRecord = {
+        id: 'opn_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+        timestamp: new Date().toISOString(),
+        items: []
+    };
+
     for (const id of keys) {
         const p = AppState.state.products.find(x => x.id === id);
         if (p && p.stock !== _opnameData[id]) {
+            historyRecord.items.push({
+                productId: p.id,
+                productName: p.name,
+                oldStock: p.stock,
+                newStock: _opnameData[id],
+                diff: _opnameData[id] - p.stock
+            });
             p.stock = _opnameData[id];
             changes++;
         }
     }
 
     if (changes > 0) {
+        if (!AppState.state.opnameHistory) AppState.state.opnameHistory = [];
+        AppState.state.opnameHistory.unshift(historyRecord);
         AppState.persist();
         Events.emit('products:updated');
+        Events.emit('opnameHistory:updated');
         UX.toast(`${changes} produk diperbarui`);
     } else {
         UX.toast('Tidak ada perubahan stok');
@@ -106,6 +122,10 @@ export const StockOpnameSheet = {
             _opnameData = {}; // reset opname state
             openModal('stockOpnameSheet');
             renderList();
+        });
+
+        document.getElementById('opnameHistoryBtn').addEventListener('click', () => {
+            Events.emit('opnameHistory:open');
         });
 
         Events.on('scanner:read', handleScanner);
