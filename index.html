@@ -224,106 +224,160 @@
     <!-- ===== Settings Sheet ===== -->
     <div class="sheet" id="settingsSheet" hidden>
         <div class="sheet__scrim" data-close="settingsSheet"></div>
-        <div class="sheet__panel">
-            <div class="sheet__grip"></div>
-            <div class="sheet__head">
-                <h2>Pengaturan</h2><button class="iconbtn" data-close="settingsSheet">✕</button>
-            </div>
-            <div class="account">
-                <span class="account__avatar" id="accountAvatar">K</span>
-                <div>
-                    <div class="account__name" id="accountName">Kasir</div>
-                    <div class="account__role">Akun tersimpan di perangkat ini</div>
+        <div class="sheet__panel" style="padding:0; overflow:hidden;">
+            <div id="settingsSlider" style="display:flex; width:300%; transition:transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);">
+                
+                <!-- PAGE 1: Main Menu -->
+                <div style="width:33.333%; flex-shrink:0; display:flex; flex-direction:column; max-height:85vh;">
+                    <div class="sheet__grip"></div>
+                    <div class="sheet__head" style="padding:0 16px;">
+                        <h2>Pengaturan</h2><button class="iconbtn" data-close="settingsSheet" onclick="setTimeout(()=>document.getElementById('settingsSlider').style.transform='translateX(0)', 300)">✕</button>
+                    </div>
+                    <div style="padding:0 16px 16px; overflow-y:auto;">
+                        <div class="account" style="margin-top:8px">
+                            <span class="account__avatar" id="accountAvatar">K</span>
+                            <div>
+                                <div class="account__name" id="accountName">Kasir</div>
+                                <div class="account__role">Akun tersimpan di perangkat ini</div>
+                            </div>
+                        </div>
+                        
+                        <p class="setting-header">Tampilan</p>
+                        <div class="setting-group">
+                            <button class="setting-item" id="darkModeBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+                                </span>
+                                <span class="setting-item__text">Mode Gelap<small id="darkModeLabel">Nonaktif</small></span>
+                                <div id="darkModeSwitch" style="width:42px;height:24px;border-radius:99px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0">
+                                    <div id="darkModeThumb" style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .2s"></div>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <p class="setting-header">Menu Lanjutan</p>
+                        <div class="setting-group">
+                            <button class="setting-item" onclick="document.getElementById('settingsSlider').style.transform='translateX(-33.333%)'">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M3 9.85h18V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4.85z"/><path d="M8 2v5.85M16 2v5.85"/></svg>
+                                </span>
+                                <span class="setting-item__text">Manajemen Toko<small>Informasi, Produk, Opname, Bayar</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" onclick="document.getElementById('settingsSlider').style.transform='translateX(-66.666%)'">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+                                </span>
+                                <span class="setting-item__text">Data & Sinkronisasi<small>Cloud Sync, Backup, Restore, CSV</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                        </div>
+                        
+                        <p class="setting-header">Akun</p>
+                        <div class="setting-group">
+                            <button class="setting-item setting-item--danger" id="logoutBtn">Keluar</button>
+                        </div>
+                        
+                        <p style="text-align:center;font-size:11.5px;color:var(--border);margin-top:18px;font-weight:500;letter-spacing:.03em">KasirKu v2.1.0</p>
+                    </div>
+                </div>
+
+                <!-- PAGE 2: Manajemen Toko -->
+                <div style="width:33.333%; flex-shrink:0; display:flex; flex-direction:column; max-height:85vh;">
+                    <div class="sheet__grip"></div>
+                    <div class="sheet__head" style="padding:0 16px; justify-content:flex-start; gap:12px;">
+                        <button class="iconbtn" onclick="document.getElementById('settingsSlider').style.transform='translateX(0)'" style="background:var(--surface);border:1px solid var(--border)">
+                            <svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <h2 style="margin:0">Manajemen Toko</h2>
+                    </div>
+                    <div style="padding:0 16px 16px; overflow-y:auto;">
+                        <div class="setting-group" style="margin-top:8px">
+                            <button class="setting-item" id="storeBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M20 21H4a1 1 0 0 1-1-1V9.85h18V20a1 1 0 0 1-1 1z"/><path d="M3 9.85h18V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4.85z"/><path d="M8 2v5.85M16 2v5.85"/></svg>
+                                </span>
+                                <span class="setting-item__text">Informasi Toko<small>Ganti nama dan alamat toko</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="manageProductsBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+                                </span>
+                                <span class="setting-item__text">Kelola Produk<small>Tambah, edit, atau hapus produk</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="stockOpnameBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><path d="M13 8h4"/><path d="M13 12h4"/><path d="M13 16h4"/></svg>
+                                </span>
+                                <span class="setting-item__text">Stock Opname<small>Sesuaikan fisik stok dengan sistem</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="payMethodsBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+                                </span>
+                                <span class="setting-item__text">Metode Pembayaran<small>Tambah atau hapus metode bayar</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 3: Data & Sinkronisasi -->
+                <div style="width:33.333%; flex-shrink:0; display:flex; flex-direction:column; max-height:85vh;">
+                    <div class="sheet__grip"></div>
+                    <div class="sheet__head" style="padding:0 16px; justify-content:flex-start; gap:12px;">
+                        <button class="iconbtn" onclick="document.getElementById('settingsSlider').style.transform='translateX(0)'" style="background:var(--surface);border:1px solid var(--border)">
+                            <svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <h2 style="margin:0">Data & Sinkronisasi</h2>
+                    </div>
+                    <div style="padding:0 16px 16px; overflow-y:auto;">
+                        <div class="setting-group" style="margin-top:8px">
+                            <button class="setting-item" id="syncBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/><path d="M12 3v-3m0 0l-5 5m5-5l5 5" style="transform-origin:center;transform:rotate(180deg) translate(0, 5px) scale(0.6)"/></svg>
+                                </span>
+                                <span class="setting-item__text">Cloud Sync (E2EE)<small>Simpan data ke server cloud</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="backupBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+                                </span>
+                                <span class="setting-item__text">Backup data<small>Unduh cadangan ke file .json</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="restoreBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M7 13l5-5 5 5"/><path d="M5 4h14"/></svg>
+                                </span>
+                                <span class="setting-item__text">Restore data<small>Pulihkan dari file backup</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="exportCsvBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+                                </span>
+                                <span class="setting-item__text">Export CSV<small>Unduh daftar produk sebagai CSV</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                            <button class="setting-item" id="importCsvBtn">
+                                <span class="setting-item__ico">
+                                    <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 12 15 15"/></svg>
+                                </span>
+                                <span class="setting-item__text">Import CSV<small>Impor produk massal dari file CSV</small></span>
+                                <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p class="setting-header">Tampilan</p>
-            <div class="setting-group">
-                <button class="setting-item" id="darkModeBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
-                    </span>
-                    <span class="setting-item__text">Mode Gelap<small id="darkModeLabel">Nonaktif</small></span>
-                    <div id="darkModeSwitch" style="width:42px;height:24px;border-radius:99px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0">
-                        <div id="darkModeThumb" style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .2s"></div>
-                    </div>
-                </button>
-            </div>
-            <p class="setting-header">Manajemen Toko</p>
-            <div class="setting-group">
-                <button class="setting-item" id="storeBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M20 21H4a1 1 0 0 1-1-1V9.85h18V20a1 1 0 0 1-1 1z"/><path d="M3 9.85h18V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4.85z"/><path d="M8 2v5.85M16 2v5.85"/></svg>
-                    </span>
-                    <span class="setting-item__text">Informasi Toko<small>Ganti nama dan alamat toko</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="manageProductsBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
-                    </span>
-                    <span class="setting-item__text">Kelola Produk<small>Tambah, edit, atau hapus produk</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="stockOpnameBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><path d="M13 8h4"/><path d="M13 12h4"/><path d="M13 16h4"/></svg>
-                    </span>
-                    <span class="setting-item__text">Stock Opname<small>Sesuaikan fisik stok dengan sistem</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="payMethodsBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-                    </span>
-                    <span class="setting-item__text">Metode Pembayaran<small>Tambah atau hapus metode bayar</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-            </div>
-            <p class="setting-header">Data & Sinkronisasi</p>
-            <div class="setting-group">
-                <button class="setting-item" id="syncBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/><path d="M12 3v-3m0 0l-5 5m5-5l5 5" style="transform-origin:center;transform:rotate(180deg) translate(0, 5px) scale(0.6)"/></svg>
-                    </span>
-                    <span class="setting-item__text">Cloud Sync (E2EE)<small>Simpan data ke server cloud</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="backupBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
-                    </span>
-                    <span class="setting-item__text">Backup data<small>Unduh cadangan ke file .json</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="restoreBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M7 13l5-5 5 5"/><path d="M5 4h14"/></svg>
-                    </span>
-                    <span class="setting-item__text">Restore data<small>Pulihkan dari file backup</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="exportCsvBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-                    </span>
-                    <span class="setting-item__text">Export CSV<small>Unduh daftar produk sebagai CSV</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-                <button class="setting-item" id="importCsvBtn">
-                    <span class="setting-item__ico">
-                        <svg class="ico ico--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 12 15 15"/></svg>
-                    </span>
-                    <span class="setting-item__text">Import CSV<small>Impor produk massal dari file CSV</small></span>
-                    <svg class="ico ico--sm setting-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-            </div>
-            <p class="setting-header">Akun</p>
-            <div class="setting-group">
-                <button class="setting-item setting-item--danger" id="logoutBtn">Keluar</button>
-            </div>
+            
             <input type="file" id="restoreInput" accept="application/json,.json,.kxb" hidden />
             <input type="file" id="importCsvInput" accept=".csv" hidden />
-            <p style="text-align:center;font-size:11.5px;color:var(--border);margin-top:18px;font-weight:500;letter-spacing:.03em">KasirKu v2.1.0</p>
         </div>
     </div>
 
@@ -413,9 +467,9 @@
                 <p style="font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:16px">Semua data Anda akan dienkripsi (digembok) sebelum dikirim ke server. Server tidak bisa membaca data Anda.</p>
             </div>
             <form id="cloudSyncForm" onsubmit="event.preventDefault()">
-                <label class="field"><span class="field__label">Store ID (Otomatis dibuat / Tempel di sini)</span><input type="text" id="syncStoreId" class="field__input" placeholder="Otomatis terisi UUID" required autocomplete="username" /></label>
+                <label class="field"><span class="field__label">Store ID (Otomatis Dibuat / Tempel di sini)</span><input type="text" id="syncStoreId" class="field__input" placeholder="Otomatis 6 digit" required autocomplete="username" style="text-transform:uppercase" /></label>
                 <div style="font-size:12px;color:var(--muted);margin-top:-8px;margin-bottom:12px;text-align:right">
-                    Salin ID ini ke perangkat lain untuk menarik data.
+                    Ketik ID perangkat lain di sini untuk menarik data.
                 </div>
                 <label class="field"><span class="field__label">Password Enkripsi</span><input type="password" id="syncPassword" class="field__input" placeholder="Wajib untuk enkripsi" required autocomplete="current-password" /></label>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
