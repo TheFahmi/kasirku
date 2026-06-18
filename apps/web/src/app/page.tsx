@@ -5,21 +5,14 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-accent selection:text-white font-sans overflow-x-hidden">
       
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/30 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/30 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[40%] left-[50%] translate-x-[-50%] w-[30%] h-[30%] bg-accent/20 blur-[100px] rounded-full pointer-events-none" />
-      </div>
-
       {/* Navbar */}
       <nav className="relative z-10 border-b border-white/10 bg-black/50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-tr from-accent to-purple-500 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
-            <span className="text-xl font-bold tracking-tight">KasirKu <span className="text-white/50 font-normal">Omni</span></span>
+            <span className="text-xl font-bold tracking-tight">Merdu <span className="text-white/50 font-normal">Omni</span></span>
           </div>
           <div className="hidden md:flex space-x-8 text-sm font-medium text-white/70">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -27,11 +20,8 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           </div>
           <div className="flex space-x-4">
-            <Link href="/pos" className="hidden md:flex items-center text-sm font-medium text-white/70 hover:text-white transition-colors">
+            <Link href="/pos" className="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95">
               Login Kasir
-            </Link>
-            <Link href="/superadmin" className="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-white/90 transition-all hover:scale-105 active:scale-95">
-              Admin Area
             </Link>
           </div>
         </div>
@@ -42,14 +32,12 @@ export default function LandingPage() {
         <section className="max-w-7xl mx-auto px-6 pt-32 pb-20 text-center">
           <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm animate-fade-in">
             <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-xs font-medium text-white/80 uppercase tracking-wider">KasirKu V2 is Live</span>
+            <span className="text-xs font-medium text-white/80 uppercase tracking-wider">Merdu POS V2 is Live</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1] animate-slide-up">
-            The Ultimate <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-blue-400 to-purple-500">
-              Omnichannel POS
-            </span>
+            Operasional Bisnis <br className="hidden md:block"/>
+            <span className="text-white">Yang Lebih Merdu</span>
           </h1>
           
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-12 animate-slide-up" style={{ animationDelay: '100ms' }}>
@@ -57,7 +45,7 @@ export default function LandingPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
-            <Link href="/pos" className="w-full sm:w-auto px-8 py-4 bg-accent text-white font-semibold rounded-full hover:bg-blue-600 transition-all shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] hover:shadow-[0_0_60px_-10px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95">
+            <Link href="/pos" className="w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
               Coba Kasir Sekarang
             </Link>
             <a href="#features" className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white font-semibold rounded-full border border-white/10 hover:bg-white/10 transition-all">
@@ -65,43 +53,51 @@ export default function LandingPage() {
             </a>
           </div>
 
-          {/* Hero Image Mockup (CSS Representation) */}
+          {/* Hero Image Mockup */}
           <div className="mt-20 relative mx-auto w-full max-w-5xl animate-slide-up" style={{ animationDelay: '300ms' }}>
-            <div className="aspect-[16/9] w-full rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col relative">
-              {/* App Header Bar */}
-              <div className="h-10 border-b border-white/10 flex items-center px-4 space-x-2 bg-white/5">
-                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            <div className="relative aspect-[16/9] w-full">
+              {/* Inner container with overflow-hidden */}
+              <div className="absolute inset-0 rounded-2xl border border-white/10 bg-[#111] shadow-2xl overflow-hidden flex flex-col">
+                {/* App Header Bar */}
+                <div className="h-10 border-b border-white/10 flex items-center px-4 space-x-2 bg-white/5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  <div className="ml-4 text-xs text-white/40 font-mono">merdu.id/pos</div>
+                </div>
+                {/* App Content */}
+                <div className="flex-1 flex p-6 gap-6 relative">
+                   <div className="w-2/3 space-y-4">
+                     <div className="h-12 w-1/3 bg-white/10 rounded-lg"></div>
+                     <div className="grid grid-cols-3 gap-4">
+                       {[1,2,3,4,5,6].map(i => (
+                         <div key={i} className="aspect-square bg-white/5 rounded-xl border border-white/5 flex flex-col items-center justify-center p-4">
+                           <div className="w-12 h-12 bg-white/10 rounded-full mb-2"></div>
+                           <div className="w-3/4 h-3 bg-white/20 rounded"></div>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                   <div className="w-1/3 bg-white/5 rounded-xl border border-white/10 p-4 flex flex-col">
+                     <div className="h-8 w-1/2 bg-white/10 rounded-md mb-4"></div>
+                     <div className="flex-1 space-y-2">
+                       <div className="h-12 w-full bg-white/5 rounded-lg flex items-center px-4"><div className="w-1/2 h-3 bg-white/20 rounded"></div></div>
+                       <div className="h-12 w-full bg-white/5 rounded-lg flex items-center px-4"><div className="w-1/3 h-3 bg-white/20 rounded"></div></div>
+                     </div>
+                     <div className="h-12 w-full bg-white text-black font-bold flex items-center justify-center rounded-lg mt-auto">Bayar</div>
+                   </div>
+                </div>
               </div>
-              {/* App Content */}
-              <div className="flex-1 flex p-6 gap-6 relative">
-                 <div className="w-2/3 space-y-4">
-                   <div className="h-12 w-1/3 bg-white/10 rounded-lg"></div>
-                   <div className="grid grid-cols-3 gap-4">
-                     {[1,2,3,4,5,6].map(i => (
-                       <div key={i} className="aspect-square bg-white/5 rounded-xl border border-white/5"></div>
-                     ))}
-                   </div>
-                 </div>
-                 <div className="w-1/3 bg-white/5 rounded-xl border border-white/10 p-4 flex flex-col">
-                   <div className="h-8 w-1/2 bg-white/10 rounded-md mb-4"></div>
-                   <div className="flex-1 space-y-2">
-                     <div className="h-10 w-full bg-white/5 rounded-lg"></div>
-                     <div className="h-10 w-full bg-white/5 rounded-lg"></div>
-                   </div>
-                   <div className="h-12 w-full bg-accent rounded-lg mt-auto"></div>
-                 </div>
-                 
-                 {/* Floating Badges */}
-                 <div className="absolute top-10 -right-6 px-4 py-2 bg-green-500/20 border border-green-500/30 text-green-400 font-semibold rounded-xl shadow-xl backdrop-blur-md rotate-3">
-                   Transaksi Selesai!
-                 </div>
-                 <div className="absolute bottom-20 -left-6 px-4 py-2 bg-purple-500/20 border border-purple-500/30 text-purple-400 font-semibold rounded-xl shadow-xl backdrop-blur-md -rotate-6">
-                   Kitchen Ready
-                 </div>
+              
+              {/* Floating Badges OUTSIDE overflow-hidden */}
+              <div className="absolute top-10 -right-6 px-4 py-2 bg-green-500 text-white font-semibold rounded-xl shadow-xl rotate-3 z-20">
+                Transaksi Sukses!
+              </div>
+              <div className="absolute bottom-20 -left-6 px-4 py-2 bg-blue-500 text-white font-semibold rounded-xl shadow-xl -rotate-6 z-20">
+                Kitchen Ready
               </div>
             </div>
+          </div>
           </div>
         </section>
 
