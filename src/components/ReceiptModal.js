@@ -35,6 +35,17 @@ function receiptHTML(tx) {
     <div class="rline" style="font-size:11px"><span>No. Transaksi</span><span><b>${esc(txNo)}</b></span></div>
     <div class="rline" style="font-size:11px"><span>Waktu</span><span>${ds}</span></div>
     ${tx.cashier ? `<div class="rline" style="font-size:11px"><span>Kasir</span><span>${esc(tx.cashier)}</span></div>` : ''}
+    
+    ${tx.bizMode === 'fb' && tx.customerName ? `<div class="rline" style="font-size:11px"><span>Meja/Nama</span><span>${esc(tx.customerName)}</span></div>` : ''}
+    ${tx.bizMode === 'service' ? `
+        ${tx.customerName ? `<div class="rline" style="font-size:11px"><span>Pelanggan</span><span>${esc(tx.customerName)}</span></div>` : ''}
+        ${tx.wa ? `<div class="rline" style="font-size:11px"><span>WA</span><span>${esc(tx.wa)}</span></div>` : ''}
+        ${tx.delivery ? `<div class="rline" style="font-size:11px"><span>Pengiriman</span><span>${esc(tx.delivery)}</span></div>` : ''}
+        ${tx.dueDate ? `<div class="rline" style="font-size:11px"><span>Selesai</span><span>${esc(tx.dueDate)}</span></div>` : ''}
+    ` : `
+        ${tx.bizMode !== 'fb' && tx.customerName ? `<div class="rline" style="font-size:11px"><span>Pelanggan</span><span>${esc(tx.customerName)}</span></div>` : ''}
+    `}
+
     ${tx.note    ? `<div class="rline" style="font-size:11px"><span>Catatan</span><span style="color:var(--accent-ink)">${esc(tx.note)}</span></div>` : ''}
     <div class="rule"></div>${rows}<div class="rule"></div>
     <div class="rline"><span>Subtotal</span><span>${formatRupiah(tx.subtotal)}</span></div>

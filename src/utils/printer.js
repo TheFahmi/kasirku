@@ -47,7 +47,20 @@ function buildReceiptData(tx) {
     line(`No    : ${tx.id}`);
     const d = new Date(tx.date);
     line(`Waktu : ${d.toLocaleDateString('id-ID')} ${d.toLocaleTimeString('id-ID')}`);
-    line(`Kasir : Admin`);
+    line(`Kasir : ${tx.cashier || 'Admin'}`);
+
+    // Business Mode Specific Info
+    if (tx.bizMode === 'fb' && tx.customerName) {
+        line(`Meja/Nama: ${tx.customerName}`);
+    } else if (tx.bizMode === 'service') {
+        if (tx.customerName) line(`Pelanggan: ${tx.customerName}`);
+        if (tx.wa) line(`WA       : ${tx.wa}`);
+        if (tx.dueDate) line(`Selesai  : ${tx.dueDate}`);
+        if (tx.delivery) line(`Pengiriman: ${tx.delivery}`);
+    } else {
+        if (tx.customerName) line(`Pelanggan: ${tx.customerName}`);
+    }
+    
     divider();
 
     // Items (assuming 32 chars width)

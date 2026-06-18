@@ -131,9 +131,24 @@ function completeTx() {
     const activeShift= AppState.getActiveShift();
     const shiftId    = activeShift ? activeShift.id : null;
 
+    const custName = document.getElementById('payCustomerName').value.trim();
+    const prioEl = document.getElementById('payPrioritySelect');
+    const priority = prioEl ? prioEl.value : 'normal';
+    
+    let wa = '', delivery = '', dueDate = '';
+    if (AppState.state.bizMode === 'service') {
+        const waEl = document.getElementById('payCustomerWa');
+        const delEl = document.getElementById('payDeliveryType');
+        const dueEl = document.getElementById('payDueDate');
+        if (waEl) wa = waEl.value.trim();
+        if (delEl) delivery = delEl.value;
+        if (dueEl) dueDate = dueEl.value;
+    }
+
     const tx = {
         id: uid(), no: AppState.nextTxNo(), date: new Date().toISOString(), cashier, note,
         customerId, isDebt, shiftId,
+        customerName: custName, priority, wa, delivery, dueDate, bizMode: AppState.state.bizMode,
         items:    AppState.state.cart.map(i => ({ ...i })),
         subtotal: AppState.cartSubtotal(),
         discount: AppState.getNominalDiscount(),
@@ -147,29 +162,15 @@ function completeTx() {
 
     // Add to Queue if not Retail
     if (AppState.state.bizMode !== 'retail') {
-        const custName = document.getElementById('payCustomerName').value.trim();
-        const prioEl = document.getElementById('payPrioritySelect');
-        const priority = prioEl ? prioEl.value : 'normal';
-        
-        let wa = '', delivery = '', dueDate = '';
-        if (AppState.state.bizMode === 'service') {
-            const waEl = document.getElementById('payCustomerWa');
-            const delEl = document.getElementById('payDeliveryType');
-            const dueEl = document.getElementById('payDueDate');
-            if (waEl) wa = waEl.value.trim();
-            if (delEl) delivery = delEl.value;
-            if (dueEl) dueDate = dueEl.value;
-        }
-
         AppState.state.orders.push({
             id: tx.id,
             no: tx.no,
             timestamp: new Date().getTime(),
-            customerName: custName,
-            wa: wa,
-            delivery: delivery,
-            dueDate: dueDate,
-            priority: priority,
+            customerName: tx.customerName,
+            wa: tx.wa,
+            delivery: tx.delivery,
+            dueDate: tx.dueDate,
+            priority: tx.priority,
             status: AppState.state.bizMode === 'service' ? 'BARU' : 'DAPUR',
             items: tx.items.map(i => ({ name: i.name, qty: i.qty })),
             total: tx.total,
