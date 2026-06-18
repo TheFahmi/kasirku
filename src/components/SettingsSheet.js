@@ -71,6 +71,7 @@ export const SettingsSheet = {
         document.getElementById('storeBtn').addEventListener('click', () => { Events.emit('store:open'); });
         document.getElementById('manageProductsBtn').addEventListener('click', () => { Events.emit('productsSheet:open'); closeModal('settingsSheet'); });
         document.getElementById('payMethodsBtn').addEventListener('click', () => { Events.emit('payMethods:open'); closeModal('settingsSheet'); });
+        document.getElementById('syncBtn').addEventListener('click', () => { openModal('cloudSyncModal'); closeModal('settingsSheet'); });
         document.getElementById('backupBtn').addEventListener('click', backupData);
         document.getElementById('restoreBtn').addEventListener('click', () => { document.getElementById('restoreInput').click(); });
         document.getElementById('restoreInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) restoreData(f); e.target.value = ''; });

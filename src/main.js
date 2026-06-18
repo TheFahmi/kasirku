@@ -28,6 +28,7 @@ import { ReportsView } from './components/ReportsView.js';
 import { CustomersView } from './components/CustomersView.js';
 import { ShiftModal } from './components/ShiftModal.js';
 import { ExpenseModal } from './components/ExpenseModal.js';
+import { CloudSync } from './components/CloudSync.js';
 
 // Wire up lazy refs to break circular dependencies
 setAppStateRef(AppState);
@@ -52,7 +53,7 @@ function init() {
         Auth, Topbar, CategoryChips, ProductGrid, CartBar, CartSheet,
         ConfirmDialog, VariantModal, PaymentModal, ReceiptModal, ProductModal,
         SettingsSheet, StoreModal, PayMethodsModal, ProductsSheet, StockOpnameSheet,
-        OpnameHistorySheet, HistoryView, ReportsView, CustomersView, ShiftModal, ExpenseModal, Router
+        OpnameHistorySheet, HistoryView, ReportsView, CustomersView, ShiftModal, ExpenseModal, CloudSync, Router
     ].forEach(m => { if (m && m.mount) m.mount(); });
 
     document.getElementById('searchInput').value = '';
